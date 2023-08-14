@@ -1,4 +1,4 @@
-package com.alinesno.infra.plat.watcher;
+package com.alinesno.infra.ops.watcher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

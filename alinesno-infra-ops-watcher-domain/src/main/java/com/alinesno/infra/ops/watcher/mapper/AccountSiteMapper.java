@@ -1,6 +1,6 @@
-//package com.alinesno.infra.plat.watcher.mapper;
+//package com.alinesno.infra.ops.watcher.mapper;
 //
-//import com.alinesno.infra.plat.watcher.entity.AccountSiteEntity;
+//import com.alinesno.infra.ops.watcher.entity.AccountSiteEntity;
 //import com.alinesno.infra.common.facade.mapper.repository.IBaseMapper;
 //
 ///**

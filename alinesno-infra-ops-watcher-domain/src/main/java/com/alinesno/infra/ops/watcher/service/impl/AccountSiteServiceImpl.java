@@ -1,8 +1,8 @@
-//package com.alinesno.infra.plat.watcher.service.impl;
+//package com.alinesno.infra.ops.watcher.service.impl;
 //
-//import com.alinesno.infra.plat.watcher.entity.AccountSiteEntity;
-//import com.alinesno.infra.plat.watcher.mapper.AccountSiteMapper;
-//import com.alinesno.infra.plat.watcher.service.AccountSiteService;
+//import com.alinesno.infra.ops.watcher.entity.AccountSiteEntity;
+//import com.alinesno.infra.ops.watcher.mapper.AccountSiteMapper;
+//import com.alinesno.infra.ops.watcher.service.AccountSiteService;
 //import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;

@@ -1,1 +1,1 @@
-package com.alinesno.infra.plat.watcher.entity;
+package com.alinesno.infra.ops.watcher.entity;

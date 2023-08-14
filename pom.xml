@@ -11,7 +11,7 @@
     </parent>
     <packaging>pom</packaging>
 
-    <groupId>com.alinesno.infra.plat</groupId>
+    <groupId>com.alinesno.infra.ops</groupId>
     <artifactId>alinesno-infra-ops-watcher-parent</artifactId>
     <version>${revision}</version>
 
