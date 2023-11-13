@@ -6,6 +6,7 @@ import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * 报表实体类
  * 用于表示系统中的报表信息，包括报表关联的用户、报表类型、报表日期和报表内容等信息。
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName("reports")
 @Data
 public class ReportEntity extends InfraBaseEntity {

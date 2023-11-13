@@ -35,4 +35,10 @@ public class RuleEntity extends InfraBaseEntity {
 	@ColumnType(length=255)
 	@ColumnComment("规则动作")
     private String action;
+
+    private String ruleName; // 规则名称
+    private String ruleType; // 规则类型
+    private Double threshold; // 阈值
+    private String description; // 规则描述
+
 }

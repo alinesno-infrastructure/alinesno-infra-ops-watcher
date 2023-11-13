@@ -6,6 +6,7 @@ import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName("alert_messages")
 @Data
 public class AlertMessageEntity extends InfraBaseEntity {
@@ -35,6 +37,9 @@ public class AlertMessageEntity extends InfraBaseEntity {
 	@ColumnType(length=1)
 	@ColumnComment("告警级别")
     private String level;
+
+    private String category; // 预警信息分类
+    private String status; // 预警信息状态
 
     /**
      * 告警描述

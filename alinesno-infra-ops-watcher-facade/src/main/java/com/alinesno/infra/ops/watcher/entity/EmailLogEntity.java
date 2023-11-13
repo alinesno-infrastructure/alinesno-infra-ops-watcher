@@ -6,6 +6,7 @@ import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * 邮件发送记录实体类
  * 用于记录已发送的邮件信息，包括关联的用户、邮件类型、邮件内容和发送时间等信息。
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName("email_logs")
 @Data
 public class EmailLogEntity extends InfraBaseEntity {
