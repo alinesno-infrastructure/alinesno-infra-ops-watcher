@@ -30,7 +30,7 @@
         <module>alinesno-infra-ops-watcher-boot</module>  <!-- 启动服务 -->
 
         <!-- 前端服务
-        <module>alinesno-infra-ops-watcher-admin</module>
+        <module>alinesno-infra-ops-watcher-ui</module>
         -->
     </modules>
 
