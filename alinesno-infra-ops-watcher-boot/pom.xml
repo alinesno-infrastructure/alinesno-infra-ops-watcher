@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alinesno.infra.ops</groupId>
-			<artifactId>alinesno-infra-ops-watcher-api</artifactId>
+			<artifactId>alinesno-infra-ops-watcher-gateway</artifactId>
 			<version>${revision}</version>
 		</dependency>
 

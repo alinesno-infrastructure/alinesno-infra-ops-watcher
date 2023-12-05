@@ -1,4 +1,4 @@
-package com.alinesno.infra.ops.watcher.api.controller;
+package com.alinesno.infra.ops.watcher.gateway.controller;
 
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;

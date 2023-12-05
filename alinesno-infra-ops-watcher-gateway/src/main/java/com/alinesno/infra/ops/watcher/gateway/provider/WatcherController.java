@@ -1,4 +1,4 @@
-package com.alinesno.infra.ops.watcher.api.provider;
+package com.alinesno.infra.ops.watcher.gateway.provider;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.ops.watcher.entity.AlertMessageEntity;
@@ -6,7 +6,6 @@ import com.alinesno.infra.ops.watcher.entity.ReportEntity;
 import com.alinesno.infra.ops.watcher.service.IAlertMessageService;
 import com.alinesno.infra.ops.watcher.service.IReportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**

@@ -1,14 +1,16 @@
-package com.alinesno.infra.ops.watcher.api.controller;
+package com.alinesno.infra.ops.watcher.gateway.controller;
 
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.ops.watcher.entity.ApplicationEntity;
-import com.alinesno.infra.ops.watcher.service.IApplicationService;
+import com.alinesno.infra.ops.watcher.entity.ReportEntity;
+import com.alinesno.infra.ops.watcher.service.IReportService;
+import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
@@ -18,24 +20,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 处理与BusinessLogEntity相关的请求的Controller。
- * 继承自BaseController类并实现IBusinessLogService接口。
+ * 处理与ReportEntity相关的请求的Controller。
+ * 继承自BaseController类并实现IReportService接口。
  *
- * @author luoxiaodong
  * @version 1.0.0
+ * @since 1.0.0
  */
-@Slf4j
+@Api(tags = "Report")
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
-@RequestMapping("/api/infra/ops/watcher/application")
-public class ApplicationController extends BaseController<ApplicationEntity, IApplicationService> {
+@RequestMapping("/api/infra/simple/crm/report")
+public class ReportController extends BaseController<ReportEntity, IReportService> {
+
+    // 日志记录
+    private static final Logger log = LoggerFactory.getLogger(ReportController.class);
 
     @Autowired
-    private IApplicationService service;
+    private IReportService service;
 
     /**
-     * 获取BusinessLogEntity的DataTables数据。
-     *
+     * 获取ReportEntity的DataTables数据。
      * @param request HttpServletRequest对象。
      * @param model Model对象。
      * @param page DatatablesPageBean对象。
@@ -49,7 +53,8 @@ public class ApplicationController extends BaseController<ApplicationEntity, IAp
     }
 
     @Override
-    public IApplicationService getFeign() {
+    public IReportService getFeign() {
         return this.service;
     }
 }
+
