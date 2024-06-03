@@ -25,14 +25,48 @@
         <module>alinesno-infra-ops-watcher-facade</module>  <!-- 接口和引用 -->
         <module>alinesno-infra-ops-watcher-domain</module>  <!-- 领域服务 -->
         <module>alinesno-infra-ops-watcher-adapter</module> <!-- 适配层 -->
+
+        <module>alinesno-infra-ops-watcher-integrate</module> <!-- 监控渠道集成 -->
+        <module>alinesno-infra-ops-watcher-alert</module> <!-- 通知渠道 -->
+
         <module>alinesno-infra-ops-watcher-gateway</module>  <!-- 接口服务 -->
         <module>alinesno-infra-ops-watcher-client</module>  <!-- 对外引用 -->
+
         <module>alinesno-infra-ops-watcher-boot</module>  <!-- 启动服务 -->
 
         <!-- 前端服务
         <module>alinesno-infra-ops-watcher-ui</module>
         -->
     </modules>
+
+    <!-- 集成 clickhouse 依赖配置 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 整合最新版本代码生成器(支持postgresql)_starter -->
+            <dependency>
+                <groupId>com.alinesno.infra.mybatis.actable</groupId>
+                <artifactId>alinesno-infra-mybatis-enhance-actable</artifactId>
+                <version>1.6.0-SNAPSHOT</version>
+            </dependency>
+            <!-- 整合最新版本代码生成器(支持postgresql)_end -->
+
+            <!-- 多数据源支撑 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic.datasource.version}</version>
+            </dependency>
+
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>
 

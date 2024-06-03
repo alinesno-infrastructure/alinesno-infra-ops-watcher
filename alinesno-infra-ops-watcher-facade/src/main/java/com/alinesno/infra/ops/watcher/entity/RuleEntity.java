@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.EqualsAndHashCode;
 
 /**
  * 规则实体类
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName("rules")
 @Data
 public class RuleEntity extends InfraBaseEntity {

@@ -1,8 +1,5 @@
 package com.alinesno.infra.common.web.adapter.login.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.dto.LoginBodyDto;
 import com.alinesno.infra.common.web.adapter.dto.menus.Menu;
@@ -134,24 +131,24 @@ public class CommonLoginController {
                 new Menu("Dashboard", "index", false, false , "dashboard", new Menu.Meta("概览", "dashboard", false, null))
         ));
 
-        Menu systemMenu = new Menu("System", "/system", false, "noRedirect", "Layout", true, new Menu.Meta("告警情况", "post", false, null),
+        Menu systemMenu = new Menu("Alert", "/alert", false, "noRedirect", "Layout", true, new Menu.Meta("告警情况", "post", false, null),
                 List.of(
-                        new Menu("Tenant", "system/tenant/index", false,false,  "system/tenant/index", new Menu.Meta("所有告警", "tree", false, null)),
-                        new Menu("Tenant", "system/tenant/index", false,false,  "system/tenant/index", new Menu.Meta("未处理告警", "tree", false, null)),
-                        new Menu("User", "system/user/index", false,false,  "system/user/index", new Menu.Meta("我的告警", "user", false, null))
+                        new Menu("AllMessage", "ops/watcher/message/index", false,false,  "ops/watcher/message/index", new Menu.Meta("所有告警", "tree", false, null)),
+                        new Menu("ErrorMessage", "ops/watcher/error/index", false,false,  "ops/watcher/error/index", new Menu.Meta("未处理告警", "tree", false, null)),
+                        new Menu("PersonMessage", "ops/watcher/person/index", false,false,  "ops/watcher/person/index", new Menu.Meta("我的告警", "user", false, null))
                 ));
 
-        Menu serviceMenu = new Menu("Log", "/log", false, "noRedirect", "Layout", true, new Menu.Meta("集成通知", "log", false, null),
+        Menu serviceMenu = new Menu("Notice", "/notice", false, "noRedirect", "Layout", true, new Menu.Meta("集成通知", "log", false, null),
                         List.of(
-                                new Menu("Operlog", "monitor/operlog/index", false,false, "monitor/operlog/index", new Menu.Meta("监控集成", "form", false, null)),
-                                new Menu("Operlog", "monitor/operlog/index", false,false, "monitor/operlog/index", new Menu.Meta("通知渠道", "form", false, null))
+                                new Menu("AlertChannel", "ops/watcher/integrate/index", false,false, "ops/watcher/integrate/index", new Menu.Meta("监控集成", "form", false, null)),
+                                new Menu("NoticeChannel", "ops/watcher/channel/index", false,false, "ops/watcher/channel/index", new Menu.Meta("通知渠道", "form", false, null))
                         ));
 
-        Menu monitorMenu = new Menu("Monitor", "/monitor", false, "noRedirect", "Layout", true, new Menu.Meta("告警配置", "monitor", false, null),
+        Menu monitorMenu = new Menu("Config", "/config", false, "noRedirect", "Layout", true, new Menu.Meta("告警配置", "monitor", false, null),
                 List.of(
-                        new Menu("Online", "monitor/online/index", false,false, "monitor/online/index", new Menu.Meta("通知模板", "online", false, null)),
-                        new Menu("Online", "monitor/online/index", false,false, "monitor/online/index", new Menu.Meta("屏蔽规则", "online", false, null)),
-                        new Menu("Online", "monitor/online/index", false,false, "monitor/online/index", new Menu.Meta("告警分组", "online", false, null))
+                        new Menu("Template", "ops/watcher/template/index", false,false, "ops/watcher/template/index", new Menu.Meta("通知模板", "online", false, null)),
+                        new Menu("Rule", "ops/watcher/rule/index", false,false, "ops/watcher/rule/index", new Menu.Meta("屏蔽规则", "online", false, null)),
+                        new Menu("AllGroup", "ops/watcher/group/index", false,false, "ops/watcher/group/index", new Menu.Meta("告警分组", "online", false, null))
                 ));
 
 
