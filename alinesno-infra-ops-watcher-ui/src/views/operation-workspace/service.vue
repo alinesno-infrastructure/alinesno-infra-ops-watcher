@@ -84,38 +84,38 @@ import * as echarts from "echarts";
 const echart = echarts;
 
 const opertionAssets = ref([
-  {id:'1' , title:'运维脚本' , count:45} ,
-  {id:'2' , title:'服务资源' , count:145} ,
-  {id:'3' , title:'持续集成' , count:65} ,
-  {id:'4' , title:'自动配置' , count:85} ,
-  {id:'5' , title:'配置管理' , count:45} ,
+  {id:'1' , title:'异常告警信息' , count:45} ,
+  {id:'2' , title:'正常运行信息' , count:145} ,
+  {id:'3' , title:'告警发送成功' , count:65} ,
+  {id:'4' , title:'告警发送失败' , count:85} ,
+  {id:'5' , title:'事件提醒次数' , count:45} ,
 ])
 
 const resources = ref([
         {
           icon: "fas fa-microchip",
-          title: "CPU core",
+          title: "告警信息",
           total: "4",
           usage: "0.64",
           usagePre: "12%",
         },
         {
           icon: "fas fa-memory",
-          title: "内存 Gi",
+          title: "告警发送",
           total: "7.68",
           usage: "4.81",
           usagePre: "12%",
         },
         {
           icon: "fas fa-hdd",
-          title: "磁盘 GB",
+          title: "业务告警",
           total: "21.57",
           usage: "207.71",
           usagePre: "12%",
         },
         {
           icon: "fab fa-docker",
-          title: "容器组",
+          title: "通知次数",
           total: "220",
           usage: "28",
           usagePre: "12%",

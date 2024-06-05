@@ -26,7 +26,7 @@
         <module>alinesno-infra-ops-watcher-domain</module>  <!-- 领域服务 -->
         <module>alinesno-infra-ops-watcher-adapter</module> <!-- 适配层 -->
 
-        <module>alinesno-infra-ops-watcher-integrate</module> <!-- 监控渠道集成 -->
+        <module>alinesno-infra-ops-watcher-channel</module> <!-- 监控渠道集成 -->
         <module>alinesno-infra-ops-watcher-alert</module> <!-- 通知渠道 -->
 
         <module>alinesno-infra-ops-watcher-gateway</module>  <!-- 接口服务 -->

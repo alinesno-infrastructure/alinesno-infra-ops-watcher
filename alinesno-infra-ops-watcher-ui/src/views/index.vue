@@ -5,16 +5,11 @@
       <el-col :span="24">
         <div class="aip-appinfo-header">
           <div class="header-icon-banner">
-            <i class="fa-brands fa-weixin"></i>
+            <i class="fa-solid fa-truck-medical"></i>
           </div>
           <div class="icon">
             <div class="title">
-                  {{ currentEnvClusterObj.appName }}
-              <div class="cluster-info">
-                <span><i class="el-icon-monitor"></i>
-                  {{ currentEnvClusterObj.clusterName }}
-                </span>
-              </div>
+                {{ currentEnvClusterObj.appName }}
             </div>
             <div class="title-desc">
                   {{ currentEnvClusterObj.desc }}
@@ -23,9 +18,6 @@
         </div>
       </el-col>
     </el-row>
-
-    <!-- 应用统计 -->
-    <!-- <OperationWorkspaceCountStaitcs /> -->
 
     <!-- 应用套件和状态 -->
     <OperationWorkspaceService />
@@ -38,18 +30,13 @@
 
 <script setup name="Index">
 
-
-// import OperationWorkspaceCountStaitcs from './operation-workspace/countStatics.vue'
-
 import OperationWorkspaceApps from './operation-workspace/apps.vue'
 import OperationWorkspaceService from './operation-workspace/service.vue'
 
-
 const currentEnvClusterObj = ref({
-  appName : '监控预警规则管理服务'  , 
+  appName : '监控预警集成服务'  ,
   clusterName: '可靠性消息中间件集成'  , 
-  apiServerUrl: 'http://portal.infra.linesno.com' , 
-  desc: '基于高可用分布式集群技术的消息中间件服务,具有大规模、高可靠、高并发访问、可扩展'
+  desc: '快速接入各类告警信息，通过算法自动去重降噪，并配合分派策略，提供出报警数据接口'
 }) 
 
 </script>
