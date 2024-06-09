@@ -11,13 +11,13 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
- * 邮件发送记录实体类
- * 用于记录已发送的邮件信息，包括关联的用户、邮件类型、邮件内容和发送时间等信息。
+ * 通知发送记录实体类
+ * 用于记录已发送的通知信息，包括关联的用户、通知类型、通知内容和发送时间等信息。
  */
 @EqualsAndHashCode(callSuper = true)
-@TableName("email_logs")
+@TableName("alert_logs")
 @Data
-public class EmailLogEntity extends InfraBaseEntity {
+public class AlertLogEntity extends InfraBaseEntity {
 
     /**
      * 关联的用户ID
@@ -28,19 +28,19 @@ public class EmailLogEntity extends InfraBaseEntity {
     private Long userId;
 
     /**
-     * 邮件类型
+     * 通知类型
      */
     @TableField(value = "email_type")
 	@ColumnType(length=50)
-	@ColumnComment("邮件类型")
+	@ColumnComment("通知类型")
     private String emailType;
 
     /**
-     * 邮件内容
+     * 通知内容
      */
     @TableField(value = "email_content")
 	@ColumnType(length=255)
-	@ColumnComment("邮件内容")
+	@ColumnComment("通知内容")
     private String emailContent;
 
     /**

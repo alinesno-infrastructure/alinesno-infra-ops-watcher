@@ -56,6 +56,11 @@
                     />
                  </template>
               </el-table-column>
+              <el-table-column label="配置渠道" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+                 <template #default="scope">
+                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> <i class="fa-solid fa-link"></i> 配置 </el-button>
+                 </template>
+              </el-table-column>
               <el-table-column label="请求次数" align="center" width="300" key="requestCount" prop="requestCount" v-if="columns[2].visible" :show-overflow-tooltip="true">
                  <template #default="scope">
                     <span v-if="scope.row.isRateLimited == 1">

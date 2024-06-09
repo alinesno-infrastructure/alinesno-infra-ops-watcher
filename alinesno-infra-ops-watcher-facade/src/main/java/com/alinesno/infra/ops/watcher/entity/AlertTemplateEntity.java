@@ -1,13 +1,11 @@
 package com.alinesno.infra.ops.watcher.entity;
 
+import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
 import lombok.Data;
-import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -18,9 +16,9 @@ import lombok.EqualsAndHashCode;
  * @version 1.0.0
  */
 @EqualsAndHashCode(callSuper = true)
-@TableName("system_config")
+@TableName("alert_template")
 @Data
-public class SystemConfigEntity extends InfraBaseEntity {
+public class AlertTemplateEntity extends InfraBaseEntity {
 
     /**
      * 日志级别

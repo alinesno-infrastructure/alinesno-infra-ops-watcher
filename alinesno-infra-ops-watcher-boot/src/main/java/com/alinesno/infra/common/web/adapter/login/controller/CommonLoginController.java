@@ -154,7 +154,7 @@ public class CommonLoginController {
         Menu serviceMenu = new Menu("Notice", "/notice", false, "noRedirect", "Layout", true, new Menu.Meta("集成通知", "log", false, null),
                         List.of(
                                 new Menu("ProviderChannel", "ops/watcher/channel/index", false,false,  "ops/watcher/channel/index", new Menu.Meta("接入渠道", "guide", false, null)),
-                                new Menu("AlertChannel", "ops/watcher/integrate/index", false,false, "ops/watcher/integrate/index", new Menu.Meta("监控集成", "form", false, null))
+                                new Menu("AlertChannel", "ops/watcher/alert/index", false,false, "ops/watcher/alert/index", new Menu.Meta("监控集成", "form", false, null))
                         ));
 
         Menu monitorMenu = new Menu("Config", "/config", false, "noRedirect", "Layout", true, new Menu.Meta("告警配置", "monitor", false, null),
