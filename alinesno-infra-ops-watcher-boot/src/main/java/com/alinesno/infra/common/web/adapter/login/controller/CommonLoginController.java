@@ -3,6 +3,7 @@ package com.alinesno.infra.common.web.adapter.login.controller;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.dto.LoginBodyDto;
 import com.alinesno.infra.common.web.adapter.dto.menus.Menu;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -131,6 +132,11 @@ public class CommonLoginController {
                 new Menu("Dashboard", "index", false, false , "dashboard", new Menu.Meta("概览", "dashboard", false, null))
         ));
 
+        Menu projectMenu = new Menu("Project", "/project", false, "noRedirect", "Layout", true, new Menu.Meta("项目管理", "post", false, null),
+                List.of(
+                        new Menu("Project", "ops/watcher/project/index", false,false,  "ops/watcher/project/index", new Menu.Meta("项目管理", "druid", false, null))
+                ));
+
         Menu systemMenu = new Menu("Alert", "/alert", false, "noRedirect", "Layout", true, new Menu.Meta("告警情况", "post", false, null),
                 List.of(
                         new Menu("AllMessage", "ops/watcher/message/index", false,false,  "ops/watcher/message/index", new Menu.Meta("所有告警", "tree", false, null)),
@@ -138,10 +144,17 @@ public class CommonLoginController {
                         new Menu("PersonMessage", "ops/watcher/person/index", false,false,  "ops/watcher/person/index", new Menu.Meta("我的告警", "user", false, null))
                 ));
 
+        List<Menu> menus = getMenus(projectMenu, dashboardMenu, systemMenu);
+
+        return AjaxResult.success(menus) ;
+    }
+
+    @NotNull
+    private static List<Menu> getMenus(Menu projectMenu, Menu dashboardMenu, Menu systemMenu) {
         Menu serviceMenu = new Menu("Notice", "/notice", false, "noRedirect", "Layout", true, new Menu.Meta("集成通知", "log", false, null),
                         List.of(
-                                new Menu("AlertChannel", "ops/watcher/integrate/index", false,false, "ops/watcher/integrate/index", new Menu.Meta("监控集成", "form", false, null)),
-                                new Menu("NoticeChannel", "ops/watcher/channel/index", false,false, "ops/watcher/channel/index", new Menu.Meta("通知渠道", "form", false, null))
+                                new Menu("ProviderChannel", "ops/watcher/channel/index", false,false,  "ops/watcher/channel/index", new Menu.Meta("接入渠道", "guide", false, null)),
+                                new Menu("AlertChannel", "ops/watcher/integrate/index", false,false, "ops/watcher/integrate/index", new Menu.Meta("监控集成", "form", false, null))
                         ));
 
         Menu monitorMenu = new Menu("Config", "/config", false, "noRedirect", "Layout", true, new Menu.Meta("告警配置", "monitor", false, null),
@@ -152,8 +165,6 @@ public class CommonLoginController {
                 ));
 
 
-        List<Menu> menus = List.of(dashboardMenu , systemMenu, serviceMenu , monitorMenu);
-
-        return AjaxResult.success(menus) ;
+        return List.of(dashboardMenu, projectMenu, systemMenu, serviceMenu , monitorMenu);
     }
 }

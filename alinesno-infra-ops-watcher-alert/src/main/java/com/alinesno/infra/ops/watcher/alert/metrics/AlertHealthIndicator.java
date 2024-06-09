@@ -18,7 +18,7 @@
 package com.alinesno.infra.ops.watcher.alert.metrics;
 
 
-import com.alinesno.infra.ops.watcher.alert.registry.AlertRegistryClient;
+//import com.alinesno.infra.ops.watcher.alert.registry.AlertRegistryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -28,17 +28,18 @@ import org.springframework.stereotype.Component;
 public class AlertHealthIndicator implements HealthIndicator {
 
     @Autowired
-    private AlertRegistryClient alertRegistryClient;
+//    private AlertRegistryClient alertRegistryClient;
 
     @Override
     public Health health() {
-        try {
-            if (alertRegistryClient.isAvailable()) {
-                return Health.up().build();
-            }
-            return Health.down().build();
-        } catch (Exception ex) {
-            return Health.down().withException(ex).build();
-        }
+//        try {
+//            if (alertRegistryClient.isAvailable()) {
+//                return Health.up().build();
+//            }
+//            return Health.down().build();
+//        } catch (Exception ex) {
+//            return Health.down().withException(ex).build();
+//        }
+        return Health.up().build();
     }
 }

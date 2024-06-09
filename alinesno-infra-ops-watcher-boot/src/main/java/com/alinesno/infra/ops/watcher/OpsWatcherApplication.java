@@ -13,7 +13,7 @@ public class OpsWatcherApplication {
 
 	/**
 	 * 程序的入口点。
-	 * 使用SpringApplication.run()方法启动Spring Boot应用程序。
+	 * 使用SpringProject.run()方法启动Spring Boot应用程序。
 	 * 参数:
 	 * args - 命令行参数，用于配置应用程序的行为。
 	 */

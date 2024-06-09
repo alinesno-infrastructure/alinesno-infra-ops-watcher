@@ -1,7 +1,7 @@
 package com.alinesno.infra.ops.watcher.mapper;
 
 import com.alinesno.infra.common.facade.mapper.repository.IBaseMapper;
-import com.alinesno.infra.ops.watcher.entity.ApplicationEntity;
+import com.alinesno.infra.ops.watcher.entity.ProjectEntity;
 
 /**
  * MqMessageMapper 接口是一个数据访问接口，用于操作 MqMessageEntity 对象。
@@ -10,5 +10,5 @@ import com.alinesno.infra.ops.watcher.entity.ApplicationEntity;
  * @author luoxiaodong
  * @version 1.0.0
  */
-public interface ApplicationMapper extends IBaseMapper<ApplicationEntity> {
+public interface ProjectMapper extends IBaseMapper<ProjectEntity> {
 }
