@@ -1,5 +1,7 @@
 package com.alinesno.infra.ops.watcher.entity;
 
+import com.alinesno.infra.ops.watcher.enums.AlertLevelEnum;
+import com.alinesno.infra.ops.watcher.enums.AlertStatusEnum;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
 import lombok.Data;
@@ -22,38 +24,34 @@ import java.time.LocalDateTime;
 @Data
 public class AlertMessageEntity extends InfraBaseEntity {
 
-    /**
-     * 告警来源
-     */
     @TableField(value = "source")
-	@ColumnType(length=255)
+	@ColumnType(length=64)
 	@ColumnComment("告警来源")
     private String source;
 
-    /**
-     * 告警级别
-     */
     @TableField(value = "level")
 	@ColumnType(length=1)
 	@ColumnComment("告警级别")
-    private String level;
+    private String level = AlertLevelEnum.IMPORTANT.getCode() ; // 告警级别(1紧急|2重要|3一般|4低)
 
+    @TableField(value = "category")
+    @ColumnType(length=10)
+    @ColumnComment("预警信息分类")
     private String category; // 预警信息分类
-    private String status; // 预警信息状态
 
-    /**
-     * 告警描述
-     */
+    @TableField(value = "status")
+    @ColumnType(length=1)
+    @ColumnComment("预警信息状态")
+    private String status = AlertStatusEnum.PENDING.getCode() ; // 预警信息状态(1已发送|2待处理|3处理中|9发送失败)
+
     @TableField(value = "description")
-	@ColumnType(length=255)
+	@ColumnType(length=128)
 	@ColumnComment("告警描述")
     private String description;
 
-    /**
-     * 告警时间戳
-     */
     @TableField(value = "timestamp")
 	@ColumnType(length=20)
 	@ColumnComment("告警时间戳")
     private LocalDateTime timestamp;
+
 }

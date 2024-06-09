@@ -1,5 +1,8 @@
 package com.alinesno.infra.ops.watcher;
 
+import com.alinesno.infra.ops.watcher.init.InitService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2023年8月3日 上午6:23:43
  */
 @SpringBootApplication
-public class OpsWatcherApplication {
+public class OpsWatcherApplication implements CommandLineRunner {
+
+	@Autowired
+	private InitService initService ;
 
 	/**
 	 * 程序的入口点。
@@ -21,4 +27,8 @@ public class OpsWatcherApplication {
 	    SpringApplication.run(OpsWatcherApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		initService.initData() ;
+	}
 }

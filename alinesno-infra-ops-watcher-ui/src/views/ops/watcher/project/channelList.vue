@@ -24,8 +24,8 @@
               </el-table-column>
 
               <!-- 业务字段-->
-              <el-table-column label="类型名称" align="center" width="150" key="typeName" prop="typeName" v-if="columns[0].visible" />
-              <el-table-column label="类型描述" align="left" key="typeDesc" prop="typeDesc" v-if="columns[0].visible" />
+              <el-table-column label="类型名称" align="center" width="150" key="channelName" prop="channelName" v-if="columns[0].visible" />
+              <el-table-column label="类型描述" align="left" key="channelDesc" prop="channelDesc" v-if="columns[0].visible" />
            </el-table>
            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
         </el-col>

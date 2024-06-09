@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="应用名称" prop="title">
+      <el-form-item label="告警名称" prop="title">
         <el-input
             v-model="queryParams.title"
-            placeholder="请输入应用名称"
+            placeholder="请输入告警名称"
             clearable
             style="width: 240px;"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="应用代码" prop="operName">
+      <el-form-item label="告警代码" prop="operName">
         <el-input
             v-model="queryParams.operName"
             placeholder="请输入操作人员"
@@ -72,29 +72,49 @@
 
     <el-table ref="operlogRef" v-loading="loading" :data="operlogList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="图标" align="center" width="70" key="icon" >
+      <el-table-column label="图标" align="center" width="50" key="icon" >
           <template #default="scope">
               <div class="role-icon">
-                <img style="width:40px;height:40px;border-radius:5px;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + ((scope.$index + 1)%10 + 5) + '.png'" />
+                <span v-if="scope.row.level == 0">
+                  <el-button type="danger" bg link>
+                    <i class="fa-solid fa-bomb" style="font-size: 20px"></i>
+                  </el-button>
+                </span>
+                <span v-if="scope.row.level == 1">
+                  <el-button type="danger" bg link>
+                    <i class="fa-solid fa-fire" style="font-size: 20px"></i>
+                  </el-button>
+                </span>
+                <span v-if="scope.row.level == 2">
+                  <el-button type="danger" bg link>
+                    <i class="fa-solid fa-bug" style="font-size: 20px"></i>
+                  </el-button>
+                </span>
+                <span v-if="scope.row.level == 3">
+                  <el-button type="danger" bg link>
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px"></i>
+                  </el-button>
+                </span>
               </div>
           </template>
       </el-table-column>
-      <el-table-column label="应用名称" align="left" prop="projectName">
+      <el-table-column label="告警来源" align="left" width="150" prop="source">
         <template #default="scope">
           <div>
-            {{ scope.row.projectName }}
+            {{ scope.row.source }}
           </div>
           <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
-            调用码: {{ scope.row.projectCode }} <el-icon><CopyDocument /></el-icon>
           </div>
       </template>
       </el-table-column>
-      <el-table-column label="应用描述" align="left" prop="projectDesc" />
-      <el-table-column label="应用链接" align="center" width="150" prop="businessType">
+      <el-table-column label="告警描述" align="left" prop="description" />
+      <!-- 
+      <el-table-column label="告警链接" align="center" width="150" prop="category">
         <template #default="scope">
-          <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-link"></i>&nbsp;打开配置</el-button>
+          <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-pen-nib"></i>&nbsp;异常详情</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> 
+      -->
       <el-table-column label="状态" width="100" align="center" prop="status">
         <template #default="scope">
             <el-switch
@@ -105,24 +125,18 @@
             />
         </template>
       </el-table-column>
-      <el-table-column label="菜单配置" align="center" width="200" key="requestCount" prop="requestCount" :show-overflow-tooltip="true">
+      <el-table-column label="详情" align="center" width="200" key="requestCount" prop="requestCount" :show-overflow-tooltip="true">
           <template #default="scope">
-            <el-button type="danger" bg link @click="openMenu(scope.row)"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置</el-button>
+            <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-pen-nib"></i>&nbsp;异常详情</el-button>
           </template>
       </el-table-column>
-      <el-table-column label="添加日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+      <el-table-column label="发送时间" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
         <template #default="scope">
-          <span>{{ parseTime(scope.row.addTime) }}</span>
+          <span>{{ parseTime(scope.row.timestamp) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button
-              type="text"
-              icon="Edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:menu:edit']"
-          >修改</el-button>
           <el-button
               type="text"
               icon="Delete"
@@ -168,14 +182,14 @@
               </el-popover>
             </el-form-item>
           </el-col>
-        <el-form-item label="应用名称" prop="projectName">
-          <el-input v-model="form.projectName" placeholder="请输入应用名称" />
+        <el-form-item label="告警名称" prop="source">
+          <el-input v-model="form.source" placeholder="请输入告警名称" />
         </el-form-item>
-        <el-form-item label="应用描述" prop="projectDesc">
-          <el-input v-model="form.projectDesc" placeholder="请输入应用描述" />
+        <el-form-item label="告警描述" prop="description">
+          <el-input v-model="form.description" placeholder="请输入告警描述" />
         </el-form-item>
-        <el-form-item label="应用代码" prop="projectCode">
-          <el-input v-model="form.projectCode" placeholder="请输入应用代码" />
+        <el-form-item label="告警代码" prop="projectCode">
+          <el-input v-model="form.projectCode" placeholder="请输入告警代码" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -230,7 +244,7 @@ const data = reactive({
     pageSize: 10,
     title: undefined,
     operName: undefined,
-    businessType: undefined,
+    category: undefined,
     status: undefined
   }
 });
@@ -291,7 +305,7 @@ function hideSelectIcon(event) {
 }
 /** 操作日志类型字典翻译 */
 function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
+  return proxy.selectDictLabel(sys_oper_type.value, row.category);
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -335,7 +349,7 @@ function handleDelete(row) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加应用";
+  title.value = "添加告警";
 }
 /** 修改按钮操作 */
 async function handleUpdate(row) {
@@ -343,7 +357,7 @@ async function handleUpdate(row) {
   getProject(row.id).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改应用";
+    title.value = "修改告警";
   });
 }
 /** 导出按钮操作 */

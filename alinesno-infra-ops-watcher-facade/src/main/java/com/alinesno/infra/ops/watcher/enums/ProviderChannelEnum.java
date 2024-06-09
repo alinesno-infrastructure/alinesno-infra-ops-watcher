@@ -11,16 +11,17 @@ import java.util.List;
 @Getter
 public enum ProviderChannelEnum {
 
-    PPT("PPT", "支持PPT、PPTX等，兼容WPS、Office文档类型", "fa-solid fa-file-powerpoint"),
-    EXCEL("Excel", "支持Excel等，兼容WPS、Office文档类型", "fa-solid fa-file-excel"),
-    WORD("Word", "支持Doc、Docx等，兼容WPS、Office文档类型", "fa-solid fa-file-word"),
-    CVS("CVS", "支持CVS在线查看等，兼容WPS、Office文档类型", "fa-solid fa-file-csv"),
-    PDF("PDF", "支持PDF在线查看等，兼容WPS、Office文档类型", "fa-solid fa-file-pdf"),
-    PNG("PNG", "支持 jpg, jpeg, png, gif, bmp, ico, jfif, webp 等图片预览（翻转，缩放，镜像）", "fa-solid fa-file-image"),
-    MP4("MP4", "支持 mp3, wav, mp4, flv 等音视频格式文件", "fa-solid fa-file-video"),
-    MP3("MP3", "支持 mp3, wav, mp4, flv 等音视频格式文件", "fa-solid fa-file-audio"),
-    ZIP("ZIP", "支持 zip, rar, jar, tar, gzip, 7z 等压缩包", "fa-solid fa-file-archive"),
-    XMIND("XMind", "支持 xmind 软件模型文件", "fa-solid fa-brain");
+    ALIYUN("阿里云", "用于连接和管理阿里云服务", "fa-brands fa-alipay"),
+    DOCKER("Docker", "用于容器化应用部署和管理", "fa-brands fa-docker"),
+    KUBERNETES("Kubernetes", "用于容器编排和集群管理", "fa-brands fa-wordpress"),
+    JIRA("Jira", "用于敏捷项目管理和问题追踪", "fa-brands fa-envira"),
+    JENKINS("Jenkins", "用于持续集成和持续交付", "fa-brands fa-jenkins"),
+    PROMETHEUS("Prometheus", "用于监控和警报通知", "fa-brands fa-product-hunt"),
+    SERVER("Server", "用于服务器管理和监控", "fa-solid fa-server"),
+    SPRING_BOOT("SpringBoot", "用于构建和部署Spring Boot应用", "fa-solid fa-leaf"),
+    JAVA_APPLICATION("JavaApplication", "用于Java应用程序的部署和管理", "fa-brands fa-java"),
+    TOMCAT("Tomcat", "用于Apache Tomcat服务器的部署和管理", "fa-solid fa-truck-fast"),
+    ZBOX("Zbox禅道", "用于项目管理和团队协作", "fa-solid fa-user-shield");
 
     private final String name;
     private final String desc;
