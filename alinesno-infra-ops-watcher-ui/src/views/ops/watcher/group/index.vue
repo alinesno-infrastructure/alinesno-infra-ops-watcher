@@ -188,16 +188,16 @@
   </div>
 </template>
 
-<script setup name="Project">
+<script setup name="Group">
 
 import {
-  listProject,
-  delProject ,
-  getProject ,
-  updateProject ,
+  listGroup,
+  delGroup ,
+  getGroup ,
+  updateGroup ,
   changStatusField ,
-  addProject
-} from "@/api/ops/watcher/message";
+  addGroup
+} from "@/api/ops/watcher/group";
 
 import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
@@ -255,7 +255,7 @@ function reset() {
 /** 查询登录日志 */
 function getList() {
   loading.value = true;
-  listProject(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  listGroup(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
     operlogList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -325,7 +325,7 @@ function handleView(row) {
 function handleDelete(row) {
   const operIds = row.id || ids.value;
   proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
-    return delProject(operIds);
+    return delGroup(operIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -340,7 +340,7 @@ function handleAdd() {
 /** 修改按钮操作 */
 async function handleUpdate(row) {
   reset();
-  getProject(row.id).then(response => {
+  getGroup(row.id).then(response => {
     form.value = response.data;
     open.value = true;
     title.value = "修改应用";
@@ -358,13 +358,13 @@ function submitForm() {
   proxy.$refs["applicationFormRef"].validate(valid => {
     if (valid) {
       if (form.value.id != undefined) {
-        updateProject(form.value).then(response => {
+        updateGroup(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        addProject(form.value).then(response => {
+        addGroup(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import { parseStrEmpty } from "@/utils/ruoyi";
 
 // 接口配置项
-var prefix = '/api/infra/ops/watcher/alertMessage/' ;
+var prefix = '/api/infra/ops/watcher/group/' ;
 var managerUrl = {
     datatables: prefix + "datatables",
     createUrl: prefix + 'add',
@@ -12,10 +12,10 @@ var managerUrl = {
     cleanUrl: prefix + "clean",
     detailUrl: prefix + "detail",
     removeUrl: prefix + "delete",
-    choiceProject: prefix + "choiceProject",
+    choiceGroup: prefix + "choiceGroup",
     exportUrl: prefix + "exportExcel",
     changeField: prefix + "changeField",
-    currentProject: prefix + "currentProject",
+    currentGroup: prefix + "currentGroup",
     downloadfile: prefix + "downloadfile" ,
     latestList: prefix + "latestList"
 }
@@ -38,23 +38,23 @@ export function changStatusField(data){
 }
 
 // 选择当前应用
-export function getCurrentProject(){
+export function getCurrentGroup(){
     return request({
-        url: managerUrl.currentProject ,
+        url: managerUrl.currentGroup ,
         method: 'get'
     })
 }
 
 // 配置当前应用
-export function choiceProject(id){
+export function choiceGroup(id){
     return request({
-        url: managerUrl.choiceProject + '?projectId=' + parseStrEmpty(id),
+        url: managerUrl.choiceGroup + '?projectId=' + parseStrEmpty(id),
         method: 'get'
     })
 }
 
 // 查询用户列表
-export function listProject(query) {
+export function listGroup(query) {
     return request({
         url: managerUrl.datatables,
         method: 'post',
@@ -63,7 +63,7 @@ export function listProject(query) {
 }
 
 // 查询用户详细
-export function getProject(id) {
+export function getGroup(id) {
     return request({
         url: managerUrl.detailUrl + '/' + parseStrEmpty(id),
         method: 'get'
@@ -71,7 +71,7 @@ export function getProject(id) {
 }
 
 // 新增用户
-export function addProject(data) {
+export function addGroup(data) {
     return request({
         url: managerUrl.saveUrl,
         method: 'post',
@@ -80,7 +80,7 @@ export function addProject(data) {
 }
 
 // 修改用户
-export function updateProject(data) {
+export function updateGroup(data) {
     return request({
         url: managerUrl.updateUrl,
         method: 'put',
@@ -89,7 +89,7 @@ export function updateProject(data) {
 }
 
 // 删除用户
-export function delProject(id) {
+export function delGroup(id) {
     return request({
         url: managerUrl.removeUrl + '/' + parseStrEmpty(id),
         method: 'delete'
@@ -97,7 +97,7 @@ export function delProject(id) {
 }
 
 // 用户密码重置
-export function resetProjectPwd(userId, password) {
+export function resetGroupPwd(userId, password) {
     const data = {
         userId,
         password
@@ -110,7 +110,7 @@ export function resetProjectPwd(userId, password) {
 }
 
 // 用户状态修改
-export function changeProjectStatus(userId, status) {
+export function changeGroupStatus(userId, status) {
     const data = {
         userId,
         status
@@ -123,7 +123,7 @@ export function changeProjectStatus(userId, status) {
 }
 
 // 查询用户个人信息
-export function getProjectProfile() {
+export function getGroupProfile() {
     return request({
         url: '/system/user/profile',
         method: 'get'
@@ -131,7 +131,7 @@ export function getProjectProfile() {
 }
 
 // 修改用户个人信息
-export function updateProjectProfile(data) {
+export function updateGroupProfile(data) {
     return request({
         url: '/system/user/profile',
         method: 'put',
@@ -140,7 +140,7 @@ export function updateProjectProfile(data) {
 }
 
 // 用户密码重置
-export function updateProjectPwd(oldPassword, newPassword) {
+export function updateGroupPwd(oldPassword, newPassword) {
     const data = {
         oldPassword,
         newPassword

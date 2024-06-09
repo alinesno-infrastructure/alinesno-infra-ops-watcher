@@ -139,7 +139,7 @@ public class CommonLoginController {
 
         Menu systemMenu = new Menu("Alert", "/alert", false, "noRedirect", "Layout", true, new Menu.Meta("告警情况", "post", false, null),
                 List.of(
-                        new Menu("AllMessage", "ops/watcher/message/index", false,false,  "ops/watcher/message/index", new Menu.Meta("所有告警", "tree", false, null)),
+                        new Menu("AllMessage", "ops/watcher/message/index", false,false,  "ops/watcher/message/index", new Menu.Meta("所有告警", "form", false, null)),
                         new Menu("ErrorMessage", "ops/watcher/error/index", false,false,  "ops/watcher/error/index", new Menu.Meta("未处理告警", "tree", false, null)),
                         new Menu("PersonMessage", "ops/watcher/person/index", false,false,  "ops/watcher/person/index", new Menu.Meta("我的告警", "user", false, null))
                 ));
@@ -159,9 +159,9 @@ public class CommonLoginController {
 
         Menu monitorMenu = new Menu("Config", "/config", false, "noRedirect", "Layout", true, new Menu.Meta("告警配置", "monitor", false, null),
                 List.of(
-                        new Menu("Template", "ops/watcher/template/index", false,false, "ops/watcher/template/index", new Menu.Meta("通知模板", "online", false, null)),
+                        new Menu("Template", "ops/watcher/template/index", false,false, "ops/watcher/template/index", new Menu.Meta("通知模板", "form", false, null)),
                         new Menu("Rule", "ops/watcher/rule/index", false,false, "ops/watcher/rule/index", new Menu.Meta("屏蔽规则", "online", false, null)),
-                        new Menu("AllGroup", "ops/watcher/group/index", false,false, "ops/watcher/group/index", new Menu.Meta("告警分组", "online", false, null))
+                        new Menu("AllGroup", "ops/watcher/group/index", false,false, "ops/watcher/group/index", new Menu.Meta("告警分组", "guide", false, null))
                 ));
 
 
