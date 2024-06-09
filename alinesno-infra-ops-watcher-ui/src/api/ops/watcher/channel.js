@@ -34,7 +34,7 @@ export function changStatusField(data){
 }
 
 // 查询数据库列表
-export function listType(query) {
+export function listChannel(query) {
   return request({
     url: managerUrl.datatables ,
     method: 'post',
@@ -43,7 +43,7 @@ export function listType(query) {
 }
 
 // 查询数据库详细
-export function getType(databaseId) {
+export function getChannel(databaseId) {
   return request({
     url: managerUrl.detailUrl + '/' + parseStrEmpty(databaseId),
     method: 'get'
@@ -51,7 +51,7 @@ export function getType(databaseId) {
 }
 
 // 新增数据库
-export function addType(data) {
+export function addChannel(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -60,7 +60,7 @@ export function addType(data) {
 }
 
 // 修改数据库
-export function updateType(data) {
+export function updateChannel(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -69,7 +69,7 @@ export function updateType(data) {
 }
 
 // 删除数据库
-export function delType(databaseId) {
+export function delChannel(databaseId) {
   return request({
     url: managerUrl.removeUrl + '/' + parseStrEmpty(databaseId),
     method: 'delete'
