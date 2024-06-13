@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
      <el-row :gutter="20">
-        <!--应用数据-->
+        <!--模板数据-->
         <el-col :span="24" :xs="24">
            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
-              <el-form-item label="应用名称" prop="typeName">
-                 <el-input v-model="queryParams.typeName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+              <el-form-item label="模板名称" prop="typeName">
+                 <el-input v-model="queryParams.typeName" placeholder="请输入模板名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
               </el-form-item>
-              <el-form-item label="应用名称" prop="channelDesc">
-                 <el-input v-model="queryParams['condition[channelDesc|like]']" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+              <el-form-item label="模板名称" prop="channelDesc">
+                 <el-input v-model="queryParams['condition[channelDesc|like]']" placeholder="请输入模板名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
               </el-form-item>
               <el-form-item>
                  <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -34,76 +34,52 @@
            </el-row>
 
            <el-table v-loading="loading" :data="AlertTemplateList" @selection-change="handleSelectionChange">
-              <el-table-column type="index" width="50" align="center" />
-              <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
-                 <template #default="scope">
-                    <span style="font-size:25px;color:#3b5998">
-                       <i :class="scope.row.icon" />
-                    </span>
-                 </template>
+              <el-table-column label="序号" type="index" width="50" align="center" />
+
+              <el-table-column label="类型" align="center" width="80" key="icon" >
+                  <template #default="scope">
+                        <span style="font-size:25px;color:#3b5998">
+                           <i v-if="scope.row.alertMethod == 'email'" class="fa-solid fa-envelope-open-text" />
+                           <i v-if="scope.row.alertMethod == 'aliyun_sms'" class="fa-brands fa-weixin" />
+                        </span>
+                  </template>
               </el-table-column>
 
               <!-- 业务字段-->
-              <el-table-column label="类型名称" align="left" width="250" key="channelName" prop="channelName" v-if="columns[0].visible">
+              <el-table-column label="模板名称" align="left" key="channelName" prop="channelName" v-if="columns[0].visible">
                  <template #default="scope">
-                  {{ scope.row.channelName }} ({{ scope.row.channelCode}})
+                  {{ scope.row.alertContentTemplateCn }} <br/>
+                  {{ scope.row.alertContentTemplateEn}}
                  </template>
               </el-table-column>
 
-              <el-table-column label="类型描述" align="left" key="channelDesc" prop="channelDesc" v-if="columns[0].visible" />
+              <el-table-column label="告警级别" align="center" key="alertLevel" width="100" prop="alertLevel" v-if="columns[0].visible" />
 
               <el-table-column label="是否开启" align="center" width="200" key="isOpen" prop="isOpen" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <el-switch
-                       v-model="scope.row.isOpen"
+                       v-model="scope.row.hasStatus"
                        :active-value="1"
                        :inactive-value="0"
-                       @change="handleChangStatusField('isOpen' , scope.row.isOpen, scope.row.id)"
-                    />
-                 </template>
-              </el-table-column>
-              <el-table-column label="配置渠道" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
-                 <template #default="scope">
-                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> <i class="fa-solid fa-link"></i> 配置 </el-button>
-                 </template>
-              </el-table-column>
-              <el-table-column label="请求次数" align="center" width="300" key="requestCount" prop="requestCount" v-if="columns[2].visible" :show-overflow-tooltip="true">
-                 <template #default="scope">
-                    <span v-if="scope.row.isRateLimited == 1">
-                       <el-button type="primary" bg text> <i class="fa-solid fa-link"></i>{{ scope.row.requestCount }}/分</el-button>
-                    </span>
-                    <span v-else>
-                       <el-button type="danger" bg text> <i class="fa-solid fa-link"></i>  不限流</el-button>
-                    </span>
-                 </template>
-              </el-table-column>
-
-              <el-table-column label="限流" align="center" width="100" key="isRateLimited" prop="isRateLimited" v-if="columns[3].visible" :show-overflow-tooltip="true" >
-                 <template #default="scope">
-                    <el-switch
-                       v-model="scope.row.isRateLimited"
-                       :active-value="1"
-                       :inactive-value="0"
-                       @change="handleChangStatusField('isRateLimited' , scope.row.isRateLimited, scope.row.id)"
+                       @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
                     />
                  </template>
               </el-table-column>
 
               <!-- 操作字段  -->
-              <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
+              <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
                  <template #default="scope">
-                    <el-tooltip content="配置" placement="top" v-if="scope.row.id !== 1">
-                       <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:AlertTemplate:edit']"></el-button>
-                    </el-tooltip>
+                   <el-button type="text" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:menu:edit']">修改</el-button>
+                   <el-button type="text" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:menu:remove']">删除</el-button>
                  </template>
-
               </el-table-column>
+
            </el-table>
            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
         </el-col>
      </el-row>
 
-     <!-- 添加或修改应用配置对话框 -->
+     <!-- 添加或修改模板配置对话框 -->
      <el-dialog :title="title" v-model="open" width="900px" append-to-body>
         <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
            <el-row>
@@ -116,7 +92,7 @@
            <el-row>
               <el-col :span="24">
                  <el-form-item label="类型名称" prop="typeName">
-                    <el-input v-model="form.typeName" placeholder="请输入应用名称" maxlength="50" />
+                    <el-input v-model="form.typeName" placeholder="请输入模板名称" maxlength="50" />
                  </el-form-item>
               </el-col>
            </el-row>
@@ -174,11 +150,11 @@ const roleOptions = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: `应用名称`, visible: true },
-  { key: 1, label: `应用描述`, visible: true },
+  { key: 0, label: `模板名称`, visible: true },
+  { key: 1, label: `模板描述`, visible: true },
   { key: 2, label: `表数据量`, visible: true },
   { key: 3, label: `类型`, visible: true },
-  { key: 4, label: `应用地址`, visible: true },
+  { key: 4, label: `模板地址`, visible: true },
   { key: 5, label: `状态`, visible: true },
   { key: 6, label: `更新时间`, visible: true }
 ]);
@@ -203,7 +179,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询应用列表 */
+/** 查询模板列表 */
 function getList() {
   loading.value = true;
   listAlertTemplate(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
@@ -230,7 +206,7 @@ function resetQuery() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const AlertTemplateIds = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除应用编号为"' + AlertTemplateIds + '"的数据项？').then(function () {
+  proxy.$modal.confirm('是否确认删除模板编号为"' + AlertTemplateIds + '"的数据项？').then(function () {
      return delAlertTemplate(AlertTemplateIds);
   }).then(() => {
      getList();
@@ -269,7 +245,7 @@ function cancel() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加应用";
+  title.value = "添加模板";
 };
 
 /** 修改按钮操作 */
@@ -279,7 +255,7 @@ function handleUpdate(row) {
   getAlertTemplate(id).then(response => {
      form.value = response.data;
      open.value = true;
-     title.value = "修改应用";
+     title.value = "修改模板";
   });
 };
 

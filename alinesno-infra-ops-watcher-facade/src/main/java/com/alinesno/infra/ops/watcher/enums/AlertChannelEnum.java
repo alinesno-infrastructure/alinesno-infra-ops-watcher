@@ -1,6 +1,9 @@
 package com.alinesno.infra.ops.watcher.enums;
 
+import com.alinesno.infra.ops.watcher.dto.AlertChannelParamDto;
 import lombok.Getter;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +15,8 @@ public enum AlertChannelEnum {
 
     // 定义了阿里云语音通知的枚举常量
     ALIYUN_VOICE("fa-brands fa-alipay","aliyun_voice", "阿里云语音", "用于发送阿里云语音通知的渠道"),
+    // 定义了阿里云短信通知的枚举常量
+    ALIYUN_SMS("fa-brands fa-weixin","aliyun_sms", "阿里云短信", "用于发送阿里云短信通知的渠道"),
     // 定义了钉钉通知的枚举常量
     DINGTALK("fa-brands fa-slack","dingtalk", "钉钉", "用于发送钉钉通知的渠道"),
     // 定义了电子邮件通知的枚举常量
@@ -82,4 +87,75 @@ public enum AlertChannelEnum {
     public static List<AlertChannelEnum> getAllChannels() {
         return Arrays.asList(AlertChannelEnum.values());
     }
+
+    /**
+     * 根据渠道代码获取警报渠道的参数配置。
+     * 该方法通过switch-case语句根据传入的channelCode确定警报渠道，然后为每个渠道添加相应的参数配置。
+     * 参数配置以AlertChannelParamDto对象的形式添加到一个列表中，并将该列表作为方法的返回值。
+     *
+     * @param channelCode 警报渠道的代码，用于确定警报渠道和对应的参数配置。
+     * @return 返回一个包含警报渠道参数配置的列表。如果传入的渠道代码不匹配任何已知渠道，则返回一个空列表。
+     */
+    public static List<AlertChannelParamDto> getChannelParams(String channelCode) {
+        // 初始化一个空的参数列表
+        List<AlertChannelParamDto> listParam = new ArrayList<>();
+
+        // 根据渠道代码选择警报渠道并配置参数
+        switch (channelCode) {
+            case "wechat":
+                // 配置微信警报渠道的参数
+                listParam.add(new AlertChannelParamDto("wechat_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("wechat_param2", "value2", "Description 2", true));
+                break;
+
+            case "aliyun_voice":
+                // 配置阿里云语音警报渠道的参数
+                listParam.add(new AlertChannelParamDto("aliyun_voice_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("aliyun_voice_param2", "value2", "Description 2", true));
+                break;
+
+            case "aliyun_sms":
+                // 配置阿里云短信警报渠道的参数
+                listParam.add(new AlertChannelParamDto("aliyun.sms.app_key", "", "AppKey从控制台获取", true));
+                listParam.add(new AlertChannelParamDto("aliyun.sms.app_secret", "", "AppSecret从控制台获取", true));
+                listParam.add(new AlertChannelParamDto("aliyun.sms.sign_name", "", "签名名称从控制台获取，必须是审核通过的", true));
+                listParam.add(new AlertChannelParamDto("aliyun.sms.template_code", "", "模板CODE从控制台获取，必须是审核通过的", true)) ;
+                listParam.add(new AlertChannelParamDto("aliyun.sms.host", "", "API域名从控制台获取", true));
+                break;
+
+            case "dingtalk":
+                // 配置钉钉警报渠道的参数
+                listParam.add(new AlertChannelParamDto("dingtalk_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("dingtalk_param2", "value2", "Description 2", true));
+                break;
+
+            case "email":
+                // 配置电子邮件警报渠道的参数
+                listParam.add(new AlertChannelParamDto("email_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("email_param2", "value2", "Description 2", true));
+                break;
+
+            case "feishu":
+                // 配置飞书警报渠道的参数
+                listParam.add(new AlertChannelParamDto("feishu_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("feishu_param2", "value2", "Description 2", true));
+                break;
+
+            case "webhook":
+                // 配置Webhook警报渠道的参数
+                listParam.add(new AlertChannelParamDto("webhook_param1", "value1", "Description 1", true));
+                listParam.add(new AlertChannelParamDto("webhook_param2", "value2", "Description 2", true));
+                break;
+
+            default:
+                // 默认情况下，如果渠道代码不匹配任何已知渠道，则不添加任何参数
+                // 默认情况下返回空列表
+                break;
+        }
+
+        // 返回配置好的参数列表
+        return listParam;
+    }
+
+
 }

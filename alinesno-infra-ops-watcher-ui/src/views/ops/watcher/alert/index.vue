@@ -62,9 +62,9 @@
                     />
                  </template>
               </el-table-column>
-              <el-table-column label="配置渠道" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="配置渠道" align="center" width="150" key="channelCode" prop="channelCode" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
-                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> <i class="fa-solid fa-link"></i> 配置 </el-button>
+                    <el-button type="primary" bg text @click="handleConfigParams(scope.row.id , scope.row.channelCode)"> <i class="fa-solid fa-link"></i> 配置 </el-button>
                  </template>
               </el-table-column>
               <el-table-column label="请求次数" align="center" width="300" key="requestCount" prop="requestCount" v-if="columns[2].visible" :show-overflow-tooltip="true">
@@ -141,6 +141,33 @@
         </template>
      </el-dialog>
 
+     <el-dialog :title="formTitle" v-model="formDataOpen" width="900px" append-to-body>
+         <div class="mb-6">
+            <el-row v-for="(item, index) in state.editForm.header" :key="index" style="margin-bottom:10px;">
+              <el-col :span="1">
+              </el-col>
+              <el-col :span="10">
+                  <el-input v-model="item.paramKey" :placeholder="item.paramKey" :disabled="item.inner"></el-input>
+              </el-col>
+              <el-col :span="1">
+              </el-col>
+              <el-col :span="10">
+                  <el-input v-model="item.paramValue" :placeholder="item.paramDesc"></el-input>
+              </el-col>
+              <el-col :span="2" v-if="!item.inner" style="text-align: right">
+                  <el-button icon="Close" type="danger" plain circle @click="deleteHeaderRow(index)" />
+              </el-col>
+            </el-row>
+            <br/>
+            <div class="dialog-footer" style="text-align: right;">
+               <el-button type="primary" @click="submitEditForm">确 定</el-button>
+               <el-button @click="cancel">取 消</el-button>
+               <el-button icon="Plus" type="success" plain @click="addHeaderRow">添加参数</el-button>
+            </div>
+         </div>
+     </el-dialog>
+ 
+
   </div>
 </template>
 
@@ -150,7 +177,9 @@ import {
   listAlertChannel,
   delAlertChannel,
   getAlertChannel,
+  getAlertChannelParams,
   updateAlertChannel,
+  updateAlertChannelParams,
   addAlertChannel , 
   changStatusField 
 } from "@/api/ops/watcher/alertChannel";
@@ -202,6 +231,35 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+const formDataOpen = ref(false);
+const formTitle = ref("");
+
+/** 动态字段添加 */
+const state = reactive({
+ editForm: {
+    header: [
+      { paramKey: 'aliyun.sms.app_key', paramValue: '' , paramDesc: 'AppKey从控制台获取' , inner:true },
+      { paramKey: 'aliyun.sms.app_secret', paramValue: '' , paramDesc: 'AppSecret从控制台获取'  , inner:true },
+      { paramKey: 'aliyun.sms.sign_name', paramValue: '' , paramDesc: '签名名称从控制台获取，必须是审核通过的' , inner:true },
+      { paramKey: 'aliyun.sms.template_code', paramValue: '' , paramDesc: '模板CODE从控制台获取，必须是审核通过的' , inner:true },
+      { paramKey: 'aliyun.sms.host', paramValue: '' , paramDesc: 'API域名从控制台获取' , inner:true },
+    ]
+  },
+})
+
+const { editForm } = toRefs(state);
+const currentChannelId = ref(null);
+
+// 点击加号:添加一行header
+const addHeaderRow = () => {
+  state.editForm.header.push({ paramKey: '', paramValue:'' ,  paramDesc: '请自定义填写key值' , inner:false });
+};
+
+// 点击减号:删除一行header
+const deleteHeaderRow = (index) => {
+  state.editForm.header.splice(index, 1);
+};
 
 /** 查询应用列表 */
 function getList() {
@@ -262,8 +320,21 @@ function reset() {
 /** 取消按钮 */
 function cancel() {
   open.value = false;
+  formDataOpen.value = false;
   reset();
 };
+
+/** 配置参数 */
+function handleConfigParams(id, channelCode){
+   formDataOpen.value = true ;
+   console.log('id = ' + id + ' , channelCode = ' + channelCode);
+   formTitle.value = '配置参数' ; 
+   currentChannelId.value = id ;
+   getAlertChannelParams(id , channelCode).then(res => {
+      console.log('res = ' + res);
+      editForm.value.header = res.data ;
+   })
+}
 
 /** 新增按钮操作 */
 function handleAdd() {
@@ -282,6 +353,14 @@ function handleUpdate(row) {
      title.value = "修改应用";
   });
 };
+
+/** 提交动态参数表单数据 */
+function submitEditForm() {
+  updateAlertChannelParams(editForm.value.header , currentChannelId.value).then(res => {
+      console.log(res);
+      proxy.$modal.msgSuccess("修改成功");
+  });
+}
 
 /** 提交按钮 */
 function submitForm() {

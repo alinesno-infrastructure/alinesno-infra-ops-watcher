@@ -1,7 +1,10 @@
 package com.alinesno.infra.ops.watcher.service;
 
 import com.alinesno.infra.common.facade.services.IBaseService;
+import com.alinesno.infra.ops.watcher.dto.TreeSelectDto;
 import com.alinesno.infra.ops.watcher.entity.GroupEntity;
+
+import java.util.List;
 
 /**
  * 告警信息Service接口
@@ -16,5 +19,11 @@ public interface IGroupService extends IBaseService<GroupEntity> {
      * @param userId
      */
     void initGroup(long userId);
+
+    /**
+     * 查询类型列表树
+     * @return
+     */
+    List<TreeSelectDto> selectCatalogTreeList();
 
 }

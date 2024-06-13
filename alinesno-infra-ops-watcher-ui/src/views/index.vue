@@ -15,6 +15,9 @@
                   {{ currentEnvClusterObj.desc }}
             </div>
           </div>
+          <div style="position: absolute;right: 20px;">
+            <HeadlthPanel />
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -32,6 +35,7 @@
 
 import OperationWorkspaceApps from './operation-workspace/apps.vue'
 import OperationWorkspaceService from './operation-workspace/service.vue'
+import HeadlthPanel from '@/components/Health/index.vue'
 
 const currentEnvClusterObj = ref({
   appName : '监控预警集成服务'  ,

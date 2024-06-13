@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 import { parseStrEmpty } from "@/utils/ruoyi";
-import { parse } from '@vue/compiler-sfc';
 
 /**
  * 数据库接口操作
@@ -10,7 +9,7 @@ import { parse } from '@vue/compiler-sfc';
  */
 
 // 接口配置项
-var prefix = '/api/infra/ops/watcher/alert_channel/' ;
+var prefix = '/api/infra/ops/watcher/groupMember/' ;
 var managerUrl = {
     datatables : prefix +"datatables" ,
     createUrl: prefix + 'add' ,
@@ -22,39 +21,31 @@ var managerUrl = {
     removeUrl: prefix + "delete" ,
     exportUrl: prefix + "exportExcel",
     changeField: prefix + "changeField",
-    getAlertChannelParams: prefix + "getChannelParams",
     downloadfile: prefix + "downloadfile",
-    updateAlertChannelParams: prefix + "updateAlertChannelParams"
+    updateGroupMemberContent: prefix + "updateGroupMemberContent",
+    catalogTreeSelect: prefix + "catalogTreeSelect",
+    getGroupMemberContent: prefix + "getGroupMemberContent",
 }
 
-// 修改渠道参数
-export function updateAlertChannelParams(data , channelId) {
+// 查询部门下拉树结构
+export function catalogTreeSelect() {
   return request({
-    url: managerUrl.updateAlertChannelParams + '?channelId=' + parseStrEmpty(channelId),
-    method: 'put',
-    data: data
-  })
-}
-
-// 获取预警通知渠道参数
-export function getAlertChannelParams(id , channelCode){
-  return request({
-    url: managerUrl.getAlertChannelParams+ '?id=' + parseStrEmpty(id) + '&channelCode=' + parseStrEmpty(channelCode),
+    url: managerUrl.catalogTreeSelect , 
     method: 'get'
   })
 }
 
-// 修改字段
-export function changStatusField(data){
+// 列新GroupMemberContent 
+export function updateGroupMemberContent(data , postId) {
   return request({
-    url: managerUrl.changeField ,
+    url: managerUrl.updateGroupMemberContent + '?postId=' + postId,
     method: 'post',
     data: data
   })
 }
 
 // 查询数据库列表
-export function listAlertChannel(query) {
+export function listGroupMember(query) {
   return request({
     url: managerUrl.datatables ,
     method: 'post',
@@ -62,8 +53,16 @@ export function listAlertChannel(query) {
   })
 }
 
+// 获取GroupMemberContent内容  
+export function getGroupMemberContent(postId) {
+  return request({
+    url: managerUrl.getGroupMemberContent+ '?postId=' + parseStrEmpty(postId),
+    method: 'get'
+  })
+}
+
 // 查询数据库详细
-export function getAlertChannel(databaseId) {
+export function getGroupMember(databaseId) {
   return request({
     url: managerUrl.detailUrl + '/' + parseStrEmpty(databaseId),
     method: 'get'
@@ -71,7 +70,7 @@ export function getAlertChannel(databaseId) {
 }
 
 // 新增数据库
-export function addAlertChannel(data) {
+export function addGroupMember(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -80,7 +79,7 @@ export function addAlertChannel(data) {
 }
 
 // 修改数据库
-export function updateAlertChannel(data) {
+export function updateGroupMember(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -89,7 +88,7 @@ export function updateAlertChannel(data) {
 }
 
 // 删除数据库
-export function delAlertChannel(databaseId) {
+export function delGroupMember(databaseId) {
   return request({
     url: managerUrl.removeUrl + '/' + parseStrEmpty(databaseId),
     method: 'delete'

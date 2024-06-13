@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
      <el-row :gutter="20">
         <!--应用数据-->
         <el-col :span="24" :xs="24">
@@ -33,6 +34,7 @@
 
            <el-table v-loading="loading" :data="ProjectList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
+              
               <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
                  <template #default="scope">
                     <span style="font-size:25px;color:#3b5998">
@@ -41,14 +43,23 @@
                  </template>
               </el-table-column>
 
+
               <!-- 业务字段-->
-              <el-table-column label="应用名称" align="left" key="projectName" prop="projectName" v-if="columns[0].visible" />
+              <el-table-column label="应用名称" align="left" width="250" key="projectName" prop="projectName" v-if="columns[0].visible">
+                 <template #default="scope">
+                     <el-button type="danger" bg text @click="handleProjectSpace(scope.row.id)"> 
+                        <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectName }}
+                     </el-button>
+                 </template>
+              </el-table-column>
               <el-table-column label="应用描述" align="left" key="projectDesc" prop="projectDesc" v-if="columns[1].visible" />
               <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true" />
 
               <el-table-column label="配置文档" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
-                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> <i class="fa-solid fa-link"></i> 配置文档 </el-button>
+                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
+                        <i class="fa-solid fa-link"></i>&nbsp;配置文档 
+                     </el-button>
                  </template>
               </el-table-column>
 
@@ -353,6 +364,12 @@ function handleUpdate(row) {
      title.value = "修改应用";
   });
 };
+
+/** 查看项目告警空间 */
+function handleProjectSpace(id){
+  let path =  '/project/space/'
+  router.push({ path: path + id });
+}
 
 /** 提交按钮 */
 function submitForm() {

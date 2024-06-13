@@ -32,7 +32,10 @@
         <module>alinesno-infra-ops-watcher-gateway</module>  <!-- 接口服务 -->
         <module>alinesno-infra-ops-watcher-client</module>  <!-- 对外引用 -->
 
+        <module>alinesno-infra-ops-watcher-agent</module>  <!-- 对外依赖预警SDK -->
+
         <module>alinesno-infra-ops-watcher-boot</module>  <!-- 启动服务 -->
+
 
         <!-- 前端服务
         <module>alinesno-infra-ops-watcher-ui</module>

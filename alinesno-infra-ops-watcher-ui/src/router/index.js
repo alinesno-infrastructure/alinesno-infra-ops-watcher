@@ -59,19 +59,18 @@ export const constantRoutes = [
         name: '/index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       },
-
-      // {
-      //   path: '/dashboard/smartService',
-      //   component: () => import('@/views/smartService'),
-      //   name: '/dashboard/smartService',
-      //   meta: { title: '智能客服', icon: 'dashboard', affix: true }
-      // },
-      // {
-      //   path: '/dashboard/serviceList',
-      //   component: () => import('@/views/serviceList'),
-      //   name: '/dashboard/serviceList',
-      //   meta: { title: '服务列表', icon: 'dashboard', affix: true }
-      // },
+      {
+        path: '/dashboard/smartService',
+        component: () => import('@/views/smartService'),
+        name: '/dashboard/smartService',
+        meta: { title: '智能客服', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/dashboard/serviceList',
+        component: () => import('@/views/serviceList'),
+        name: '/dashboard/serviceList',
+        meta: { title: '服务列表', icon: 'dashboard', affix: true }
+      },
       {
         path: '/dashboard/suportTechnique',
         component: () => import('@/views/suportTechnique'),
@@ -85,6 +84,13 @@ export const constantRoutes = [
         meta: { title: '学习手册', icon: 'dashboard', affix: true }
       },
 
+      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> project_starter >>>>>>>>>>>>>>..
+      {
+        path: '/project/space/:projectId',
+        component: () => import('@/views/ops/watcher/project/space'),
+        name: '/project/space',
+        meta: { title: '项目告警空间', icon: 'dashboard', affix: true }
+      },
     ]
   },
   {

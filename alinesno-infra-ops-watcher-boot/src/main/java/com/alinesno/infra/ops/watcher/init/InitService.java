@@ -1,8 +1,12 @@
 package com.alinesno.infra.ops.watcher.init;
 
 import com.alinesno.infra.ops.watcher.entity.AlertMessageEntity;
+import com.alinesno.infra.ops.watcher.entity.AlertTemplateEntity;
+import com.alinesno.infra.ops.watcher.enums.AlertChannelEnum;
 import com.alinesno.infra.ops.watcher.enums.AlertLevelEnum;
+import com.alinesno.infra.ops.watcher.service.IAlertChannelParamService;
 import com.alinesno.infra.ops.watcher.service.IAlertMessageService;
+import com.alinesno.infra.ops.watcher.service.IAlertTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,9 @@ public class InitService {
     @Autowired
     private IAlertMessageService messageService ;
 
+    @Autowired
+    private IAlertTemplateService templateService ;
+
     /**
      * 初始化数据的方法
      *
@@ -29,9 +36,105 @@ public class InitService {
      */
     public void initData() {
 
+        // 初始化模拟消息
         if(messageService.count() == 0){
             initMultiScenarioPrometheusAlertData() ;
         }
+
+        // 初始化模板消息
+        if(templateService.count() == 0){
+            templateService.saveBatch(this.generateRandomDescription())  ;
+        }
+
+    }
+
+    private List<AlertTemplateEntity> generateRandomDescription() {
+
+        // 初始化包括多种异常类型的通知模板
+        List<AlertTemplateEntity> alertTemplates = new ArrayList<>();
+
+        // 内存异常通知模板
+        AlertTemplateEntity memoryAlertTemplate = new AlertTemplateEntity();
+        memoryAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        memoryAlertTemplate.setAlertContentTemplateEn("Memory Exception Alert");
+        memoryAlertTemplate.setAlertContentTemplateCn("内存异常通知：系统检测到内存使用率异常，请及时处理。");
+        memoryAlertTemplate.setAlertMethod(AlertChannelEnum.EMAIL.getCode());
+        memoryAlertTemplate.setRecipient("admin@example.com");
+        memoryAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(memoryAlertTemplate);
+
+        // 应用运行异常通知模板
+        AlertTemplateEntity appAlertTemplate = new AlertTemplateEntity();
+        appAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        appAlertTemplate.setAlertContentTemplateEn("Application Exception Alert");
+        appAlertTemplate.setAlertContentTemplateCn("应用运行异常通知：系统监测到应用出现异常，请立即处理。");
+        appAlertTemplate.setAlertMethod(AlertChannelEnum.ALIYUN_SMS.getCode());
+        appAlertTemplate.setRecipient("1234567890");
+        appAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(appAlertTemplate);
+
+        // 服务器异常通知模板
+        AlertTemplateEntity serverAlertTemplate = new AlertTemplateEntity();
+        serverAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        serverAlertTemplate.setAlertContentTemplateEn("Server Exception Alert");
+        serverAlertTemplate.setAlertContentTemplateCn("服务器异常通知：系统监测到服务器出现异常，请尽快处理。");
+        serverAlertTemplate.setAlertMethod(AlertChannelEnum.ALIYUN_SMS.getCode());
+        serverAlertTemplate.setRecipient("555-123-4567");
+        serverAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(serverAlertTemplate);
+
+        // 网络异常通知模板
+        AlertTemplateEntity networkAlertTemplate = new AlertTemplateEntity();
+        networkAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        networkAlertTemplate.setAlertContentTemplateEn("Network Exception Alert");
+        networkAlertTemplate.setAlertContentTemplateCn("网络异常通知：系统监测到网络连接异常，请查看并处理。");
+        networkAlertTemplate.setAlertMethod(AlertChannelEnum.ALIYUN_SMS.getCode());
+        networkAlertTemplate.setRecipient("9876543210");
+        networkAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(networkAlertTemplate);
+
+        // 安全攻击异常通知模板
+        AlertTemplateEntity securityAlertTemplate = new AlertTemplateEntity();
+        securityAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        securityAlertTemplate.setAlertContentTemplateEn("Security Attack Alert");
+        securityAlertTemplate.setAlertContentTemplateCn("安全攻击异常通知：系统检测到安全攻击行为，请立即采取措施。");
+        securityAlertTemplate.setAlertMethod(AlertChannelEnum.EMAIL.getCode());
+        securityAlertTemplate.setRecipient("security@example.com");
+        securityAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(securityAlertTemplate);
+
+        // CPU负载过高异常通知模板
+        AlertTemplateEntity cpuAlertTemplate = new AlertTemplateEntity();
+        cpuAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        cpuAlertTemplate.setAlertContentTemplateEn("High CPU Load Alert");
+        cpuAlertTemplate.setAlertContentTemplateCn("CPU负载过高通知：系统监测到CPU负载异常，请注意处理。");
+        cpuAlertTemplate.setAlertMethod(AlertChannelEnum.ALIYUN_SMS.getCode());
+        cpuAlertTemplate.setRecipient("1112223333");
+        cpuAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(cpuAlertTemplate);
+
+        // 数据库请求异常通知模板
+        AlertTemplateEntity dbAlertTemplate = new AlertTemplateEntity();
+        dbAlertTemplate.setAlertLevel(AlertLevelEnum.CRITICAL.getCode());
+        dbAlertTemplate.setAlertContentTemplateEn("Database Request Exception Alert");
+        dbAlertTemplate.setAlertContentTemplateCn("数据库请求异常通知：系统监测到数据库请求异常，请检查处理。");
+        dbAlertTemplate.setAlertMethod(AlertChannelEnum.EMAIL.getCode());
+        dbAlertTemplate.setRecipient("dba@example.com");
+        dbAlertTemplate.setEffectiveTime(LocalDateTime.now());
+        alertTemplates.add(dbAlertTemplate);
+
+        // 打印所有消息模板信息
+        for (AlertTemplateEntity alertTemplate : alertTemplates) {
+            System.out.println("告警级别: " + alertTemplate.getAlertLevel());
+            System.out.println("英文通知模板: " + alertTemplate.getAlertContentTemplateEn());
+            System.out.println("中文通知模板: " + alertTemplate.getAlertContentTemplateCn());
+            System.out.println("告警方式: " + alertTemplate.getAlertMethod());
+            System.out.println("接收人: " + alertTemplate.getRecipient());
+            System.out.println("生效时间: " + alertTemplate.getEffectiveTime());
+            System.out.println("--------------------------------------");
+        }
+        
+       return alertTemplates ; 
 
     }
 

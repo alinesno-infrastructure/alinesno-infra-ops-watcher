@@ -1,214 +1,217 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="应用名称" prop="title">
-        <el-input
-            v-model="queryParams.title"
-            placeholder="请输入应用名称"
-            clearable
-            style="width: 240px;"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="应用代码" prop="operName">
-        <el-input
-            v-model="queryParams.operName"
-            placeholder="请输入操作人员"
-            clearable
-            style="width: 240px;"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select
-            v-model="queryParams.status"
-            placeholder="操作状态"
-            clearable
-            style="width: 240px"
-        >
-          <el-option
-              v-for="dict in sys_common_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+   <div class="app-container">
+      <el-row :gutter="20">
+         <!--类型数据-->
+         <el-col :span="4" :xs="24">
+            <div class="head-container">
+               <el-input
+                  v-model="deptName"
+                  placeholder="请输入类型名称"
+                  clearable
+                  prefix-icon="Search"
+                  style="margin-bottom: 20px"
+               />
+            </div>
+            <div class="head-container">
+               <el-tree
+                  :data="deptOptions"
+                  :props="{ label: 'label', children: 'children' }"
+                  :expand-on-click-node="false"
+                  :filter-node-method="filterNode"
+                  ref="deptTreeRef"
+                  node-key="id"
+                  highlight-current
+                  default-expand-all
+                  @node-click="handleNodeClick"
+               />
+            </div>
+         </el-col>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-          <el-button
-              plain
-              type="primary"
-              icon="Plus"
-              @click="handleAdd()"
-              v-hasPermi="['system:dept:add']"
-          >新增</el-button>
-        <el-button
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['monitor:operlog:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['monitor:operlog:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+         <!--成员数据-->
+         <el-col :span="20" :xs="24">
+            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
+               <el-form-item label="成员名称" prop="promptName">
+                  <el-input v-model="queryParams.promptName" placeholder="请输入成员名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               </el-form-item>
+               <el-form-item label="成员名称" prop="promptName">
+                  <el-input v-model="queryParams['condition[promptName|like]']" placeholder="请输入成员名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               </el-form-item>
+               <el-form-item>
+                  <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+                  <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+               </el-form-item>
+            </el-form>
 
-    <el-table ref="operlogRef" v-loading="loading" :data="operlogList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="图标" align="center" width="70" key="icon" >
-          <template #default="scope">
-              <div class="role-icon">
-                <img style="width:40px;height:40px;border-radius:5px;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + ((scope.$index + 1)%10 + 5) + '.png'" />
-              </div>
-          </template>
-      </el-table-column>
-      <el-table-column label="应用名称" align="left" prop="projectName">
-        <template #default="scope">
-          <div>
-            {{ scope.row.projectName }}
-          </div>
-          <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
-            调用码: {{ scope.row.projectCode }} <el-icon><CopyDocument /></el-icon>
-          </div>
-      </template>
-      </el-table-column>
-      <el-table-column label="应用描述" align="left" prop="projectDesc" />
-      <el-table-column label="应用链接" align="center" width="150" prop="businessType">
-        <template #default="scope">
-          <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-link"></i>&nbsp;打开配置</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" width="100" align="center" prop="status">
-        <template #default="scope">
-            <el-switch
-              v-model="scope.row.hasStatus"
-              :active-value="0"
-              :inactive-value="1"
-              @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
-            />
-        </template>
-      </el-table-column>
-      <el-table-column label="菜单配置" align="center" width="200" key="requestCount" prop="requestCount" :show-overflow-tooltip="true">
-          <template #default="scope">
-            <el-button type="danger" bg link @click="openMenu(scope.row)"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置</el-button>
-          </template>
-      </el-table-column>
-      <el-table-column label="添加日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.addTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-        <template #default="scope">
-          <el-button
-              type="text"
-              icon="Edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:menu:edit']"
-          >修改</el-button>
-          <el-button
-              type="text"
-              icon="Delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['system:menu:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+            <el-row :gutter="10" class="mb8">
 
-    <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-    />
+               <el-col :span="1.5">
+                  <el-button type="primary" plain icon="Plus" @click="configGroup">新增分组</el-button>
+               </el-col>
 
-    <!-- 操作日志详细 -->
-    <el-dialog :title="title" v-model="open" width="700px" append-to-body>
-      <el-form ref="applicationFormRef" :model="form" :rules="rules" label-width="80px">
-          <el-col :span="24">
-            <el-form-item label="菜单图标" prop="projectIcons">
-              <el-popover
-                  placement="bottom-start"
-                  :width="540"
-                  trigger="click"
-                  @show="showSelectIcon">
-                <template #reference>
-                  <el-input v-model="form.projectIcons" placeholder="点击选择图标" @click="showSelectIcon" v-click-outside="hideSelectIcon" readonly>
-                    <template #prefix>
-                      <svg-icon
-                          v-if="form.projectIcons"
-                          :icon-class="form.projectIcons"
-                          class="el-input__icon"
-                          style="height: 32px;width: 16px;"
-                      />
-                      <el-icon v-else style="height: 32px;width: 16px;"><search /></el-icon>
-                    </template>
-                  </el-input>
-                </template>
-                <icon-select ref="iconSelectRef" @selected="selected" />
-              </el-popover>
-            </el-form-item>
-          </el-col>
-        <el-form-item label="应用名称" prop="projectName">
-          <el-input v-model="form.projectName" placeholder="请输入应用名称" />
-        </el-form-item>
-        <el-form-item label="应用描述" prop="projectDesc">
-          <el-input v-model="form.projectDesc" placeholder="请输入应用描述" />
-        </el-form-item>
-        <el-form-item label="应用代码" prop="projectCode">
-          <el-input v-model="form.projectCode" placeholder="请输入应用代码" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
-  </div>
+               <el-col :span="1.5">
+                  <el-button type="primary" plain icon="Plus" @click="handleAdd">新增成员</el-button>
+               </el-col>
+               <el-col :span="1.5">
+                  <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate">修改</el-button>
+               </el-col>
+               <el-col :span="1.5">
+                  <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
+               </el-col>
+
+               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+            </el-row>
+
+            <el-table v-loading="loading" :data="GroupMemberList" @selection-change="handleSelectionChange">
+               <el-table-column type="selection" width="50" :align="'center'" />
+
+               <el-table-column label="头像" :align="'center'" width="70" key="status" v-if="columns[5].visible">
+                  <template #default="scope">
+                     <div class="role-icon">
+                        <img :src="'http://data.linesno.com/icons/sepcialist/dataset_' + ((scope.$index + 1)%10 + 5) + '.png'" />
+                     </div>
+                  </template>
+               </el-table-column>
+
+               <!-- 业务字段-->
+               <el-table-column label="成员名称" align="left" key="promptName" prop="promptName" v-if="columns[0].visible">
+                  <template #default="scope">
+                     <div>
+                        {{ scope.row.promptName }}
+                     </div>
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+                        会话次数: 12734  调用码: {{ scope.row.promptId }} <el-icon><CopyDocument /></el-icon>
+                     </div>
+                  </template>
+               </el-table-column>
+               <el-table-column label="手机号" align="center" width="100" key="useCount" prop="useCount" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                  <template #default="scope">
+                     <span v-if="scope.row.useCount">{{ scope.row.useCount }}</span>
+                     <span v-else>0</span>
+                  </template>
+               </el-table-column>
+               <el-table-column label="邮箱" align="center" width="130" key="promptContent" prop="promptContent" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                  <template #default="scope">
+                     <el-button type="primary" text bg icon="Paperclip" @click="configGroupMember(scope.row)">配置</el-button>
+                  </template>
+               </el-table-column>
+               <el-table-column label="分组" align="center" width="200" key="promptType" prop="promptType" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+               <!-- <el-table-column label="数据来源" align="center" key="dataSourceApi" prop="dataSourceApi" v-if="columns[4].visible" width="200" /> -->
+               <el-table-column label="状态" align="center" width="100" key="hasStatus" v-if="columns[5].visible" >
+                  <template #default="scope">
+                     <el-switch
+                        v-model="scope.row.hasStatus"
+                        active-value="0"
+                        inactive-value="1"
+                     />
+                  </template>
+               </el-table-column>
+
+               <el-table-column label="添加时间" align="center" prop="addTime" v-if="columns[6].visible" width="160">
+                  <template #default="scope">
+                     <span>{{ parseTime(scope.row.addTime) }}</span>
+                  </template>
+               </el-table-column>
+
+               <!-- 操作字段  -->
+               <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
+                  <template #default="scope">
+                     <el-tooltip content="修改" placement="top" v-if="scope.row.GroupMemberId !== 1">
+                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                           v-hasPermi="['system:GroupMember:edit']"></el-button>
+                     </el-tooltip>
+                     <el-tooltip content="删除" placement="top" v-if="scope.row.GroupMemberId !== 1">
+                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                           v-hasPermi="['system:GroupMember:remove']"></el-button>
+                     </el-tooltip>
+                  </template>
+
+               </el-table-column>
+            </el-table>
+            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
+         </el-col>
+      </el-row>
+
+      <!-- 添加或修改成员配置对话框 -->
+      <el-dialog :title="promptTitle" v-model="promptOpen" width="1024" destroy-on-close append-to-body>
+         <GroupEditor :currentPostId="currentPostId" :currentGroupMemberContent="currentGroupMemberContent" />
+      </el-dialog>
+
+      <!-- 添加或修改成员配置对话框 -->
+      <el-dialog :title="title" v-model="open" width="900px" append-to-body>
+         <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item style="width: 100%;" label="类型" prop="promptType">
+                     <el-tree-select
+                        v-model="form.promptType"
+                        :data="deptOptions"
+                        :props="{ value: 'id', label: 'label', children: 'children' }"
+                        value-key="id"
+                        placeholder="请选择归属类型"
+                        check-strictly
+                     />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="名称" prop="promptName">
+                     <el-input v-model="form.promptName" placeholder="请输入成员名称" maxlength="50" />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="数据来源" prop="dataSourceApi">
+                     <el-input v-model="form.dataSourceApi" placeholder="请输入dataSourceApi数据来源" maxlength="128" />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="备注" prop="promptDesc">
+                     <el-input v-model="form.promptDesc" placeholder="请输入成员备注"></el-input>
+                  </el-form-item>
+               </el-col>
+            </el-row>
+         </el-form>
+         <template #footer>
+            <div class="dialog-footer">
+               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">取 消</el-button>
+            </div>
+         </template>
+      </el-dialog>
+
+   </div>
 </template>
 
-<script setup name="Group">
+<script setup name="GroupMember">
 
 import {
-  listGroup,
-  delGroup ,
-  getGroup ,
-  updateGroup ,
-  changStatusField ,
-  addGroup
-} from "@/api/ops/watcher/group";
+   listGroupMember,
+   delGroupMember,
+   getGroupMember,
+   updateGroupMember,
+   catalogTreeSelect,
+   addGroupMember
+} from "@/api/ops/watcher/groupMember";
 
-import SvgIcon from "@/components/SvgIcon";
-import IconSelect from "@/components/IconSelect";
-import { ClickOutside as vClickOutside } from 'element-plus'
-
-const { proxy } = getCurrentInstance();
-const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
+import GroupEditor from "./addGoup.vue"
 
 const router = useRouter();
-const operlogList = ref([]);
+const { proxy } = getCurrentInstance();
+
+// 定义变量
+const GroupMemberList = ref([]);
 const open = ref(false);
+
+const promptTitle = ref("");
+const currentPostId = ref("");
+const currentGroupMemberContent = ref([]);
+const promptOpen = ref(false);
+
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -216,176 +219,171 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const showChooseIcon = ref(false);
-const iconSelectRef = ref(null);
 const dateRange = ref([]);
-const defaultSort = ref({ prop: "operTime", order: "descending" });
+const deptOptions = ref(undefined);
+const postOptions = ref([]);
+const roleOptions = ref([]);
+
+// 列显隐信息
+const columns = ref([
+   { key: 0, label: `成员名称`, visible: true },
+   { key: 1, label: `成员描述`, visible: true },
+   { key: 2, label: `表数据量`, visible: true },
+   { key: 3, label: `类型`, visible: true },
+   { key: 4, label: `成员地址`, visible: true },
+   { key: 5, label: `状态`, visible: true },
+   { key: 6, label: `更新时间`, visible: true }
+]);
 
 const data = reactive({
-  form: {
-    projectIcons: ''
-  },
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    title: undefined,
-    operName: undefined,
-    businessType: undefined,
-    status: undefined
-  }
+   form: {},
+   queryParams: {
+      pageNum: 1,
+      pageSize: 10,
+      promptName: undefined,
+      promptDesc: undefined,
+      catalogId: undefined
+   },
+   rules: {
+      promptName: [{ required: true, message: "名称不能为空", trigger: "blur" }] ,
+      dataSourceApi: [{ required: true, message: "连接不能为空", trigger: "blur" }],
+      promptType: [{ required: true, message: "类型不能为空", trigger: "blur" }] ,
+      promptDesc: [{ required: true, message: "备注不能为空", trigger: "blur" }]
+   }
 });
 
-const { queryParams, form } = toRefs(data);
+const { queryParams, form, rules } = toRefs(data);
 
-/** 表单重置 */
-function reset() {
-  form.value = {
-    id: undefined,
-    parentId: undefined,
-    deptName: undefined,
-    orderNum: 0,
-    leader: undefined,
-    phone: undefined,
-    email: undefined,
-    status: "0"
-  };
-  proxy.resetForm("deptRef");
-}
-
-/** 查询登录日志 */
+/** 查询成员列表 */
 function getList() {
-  loading.value = true;
-  listGroup(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    operlogList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+   loading.value = true;
+   listGroupMember(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+      loading.value = false;
+      GroupMemberList.value = res.rows;
+      total.value = res.total;
+   });
+};
+
+// 节点单击事件
+function handleNodeClick(data) {
+   queryParams.value.catalogId = data.id;
+   console.log('data.id = ' + data.id)
+   getList();
 }
-/** 取消按钮 */
-function cancel() {
-  open.value = false;
-  reset();
-}
-/** 展示下拉图标 */
-function showSelectIcon() {
-  iconSelectRef.value.reset();
-  showChooseIcon.value = true;
-}
-/** 打开菜单 */
-function openMenu(row){
-  let path =  '/application/system/menu/'
-  router.push({ path: path + row.id });
-}
-/** 选择图标 */
-function selected(name) {
-  form.value.icon = name;
-  showChooseIcon.value = false;
-}
-/** 图标外层点击隐藏下拉列表 */
-function hideSelectIcon(event) {
-  var elem = event.relatedTarget || event.srcElement || event.target || event.currentTarget;
-  var className = elem.className;
-  if (className !== "el-input__inner") {
-    showChooseIcon.value = false;
-  }
-}
-/** 操作日志类型字典翻译 */
-function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
-}
+
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
+   queryParams.value.pageNum = 1;
+   getList();
+};
+
 /** 重置按钮操作 */
 function resetQuery() {
-  dateRange.value = [];
-  proxy.resetForm("queryRef");
-  proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
-  handleQuery();
-}
-/** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
-  multiple.value = !selection.length;
-}
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-/** 详细按钮操作 */
-function handleView(row) {
-  open.value = true;
-  form.value = row;
-}
+   dateRange.value = [];
+   proxy.resetForm("queryRef");
+
+   queryParams.value.catalogId = undefined;
+
+   proxy.$refs.deptTreeRef.setCurrentKey(null);
+   handleQuery();
+};
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const operIds = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
-    return delGroup(operIds);
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+   const GroupMemberIds = row.id || ids.value;
+   proxy.$modal.confirm('是否确认删除成员编号为"' + GroupMemberIds + '"的数据项？').then(function () {
+      return delGroupMember(GroupMemberIds);
+   }).then(() => {
+      getList();
+      proxy.$modal.msgSuccess("删除成功");
+   }).catch(() => { });
+};
+
+/** 选择条数  */
+function handleSelectionChange(selection) {
+   ids.value = selection.map(item => item.id);
+   single.value = selection.length != 1;
+   multiple.value = !selection.length;
+};
+
+/** 查询类型下拉树结构 */
+function getDeptTree() {
+  catalogTreeSelect().then(response => {
+    deptOptions.value = response.data;
+  });
+};
+
+/** 配置GroupMember */
+function configGroup(row){
+   promptTitle.value = "配置成员分组";
+   promptOpen.value = true ;
+   currentPostId.value = row.id;
+
+   if(row.promptContent){
+      currentGroupMemberContent.value = JSON.parse(row.promptContent);
+   }
 }
+
+/** 重置操作表单 */
+function reset() {
+   form.value = {
+      id: undefined,
+      deptId: undefined,
+      GroupMemberName: undefined,
+      nickName: undefined,
+      password: undefined,
+      phonenumber: undefined,
+      status: "0",
+      remark: undefined,
+   };
+   proxy.resetForm("databaseRef");
+};
+/** 取消按钮 */
+function cancel() {
+   open.value = false;
+   promptOpen.value = false ;
+   reset();
+};
+
 /** 新增按钮操作 */
 function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加应用";
-}
+   reset();
+   open.value = true;
+   title.value = "添加成员";
+};
+
 /** 修改按钮操作 */
-async function handleUpdate(row) {
-  reset();
-  getGroup(row.id).then(response => {
-    form.value = response.data;
-    open.value = true;
-    title.value = "修改应用";
-  });
-}
-/** 导出按钮操作 */
-function handleExport() {
-  proxy.download("monitor/operlog/export",{
-    ...queryParams.value,
-  }, `config_${new Date().getTime()}.xlsx`);
-}
+function handleUpdate(row) {
+   reset();
+   const GroupMemberId = row.id || ids.value;
+   getGroupMember(GroupMemberId).then(response => {
+      form.value = response.data;
+      open.value = true;
+      title.value = "修改成员";
+   });
+};
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["applicationFormRef"].validate(valid => {
-    if (valid) {
-      if (form.value.id != undefined) {
-        updateGroup(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addGroup(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
+   proxy.$refs["databaseRef"].validate(valid => {
+      if (valid) {
+         if (form.value.id != undefined) {
+            updateGroupMember(form.value).then(response => {
+               proxy.$modal.msgSuccess("修改成功");
+               open.value = false;
+               getList();
+            });
+         } else {
+            addGroupMember(form.value).then(response => {
+               proxy.$modal.msgSuccess("新增成功");
+               open.value = false;
+               getList();
+            });
+         }
       }
-    }
-  });
-}
+   });
+};
 
-const handleChangStatusField = async(field , value , id) => {
-    // 判断tags值 这样就不会进页面时调用了
-      const res = await changStatusField({
-         field: field,
-         value: value?1:0,
-         id: id
-      }).catch(() => { })
-      if (res && res.code == 200) {
-         // 刷新表格
-         getList()
-      }
-}
-
+getDeptTree();
 getList();
+
 </script>
