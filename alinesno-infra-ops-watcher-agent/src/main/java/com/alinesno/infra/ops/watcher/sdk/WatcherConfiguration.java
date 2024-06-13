@@ -1,14 +1,11 @@
 package com.alinesno.infra.ops.watcher.sdk;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.Serializable;
 
 /**
  * 初始化环境变量
  */
-@Slf4j
 @Data
 public class WatcherConfiguration implements Serializable {
 
