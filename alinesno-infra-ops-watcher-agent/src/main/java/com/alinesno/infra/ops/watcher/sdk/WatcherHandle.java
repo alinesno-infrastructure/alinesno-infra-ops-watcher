@@ -2,15 +2,6 @@ package com.alinesno.infra.ops.watcher.sdk;
 
 public class WatcherHandle implements Watcher {
 
-    private static WatcherConfiguration configuration = null ;
-
-    public static WatcherConfiguration config() {
-        if(configuration == null){
-            configuration = new WatcherConfiguration() ;
-        }
-        return configuration;
-    }
-
     @Override
     public void low(String var1) {
 
