@@ -91,30 +91,64 @@
                   </el-button>
                 </span>
                 <span v-if="scope.row.level == 3">
-                  <el-button type="danger" bg link>
+                  <el-button type="warning" bg link>
                     <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px"></i>
+                  </el-button>
+                </span>
+                <span v-if="scope.row.level == 4">
+                  <el-button type="info" bg link>
+                    <i class="fa-solid fa-bug" style="font-size: 20px"></i>
                   </el-button>
                 </span>
               </div>
           </template>
       </el-table-column>
-      <el-table-column label="告警来源" align="left" width="150" prop="source">
+      <el-table-column label="告警来源" align="center" width="150" prop="source">
         <template #default="scope">
           <div>
-            {{ scope.row.source }}
+            {{ scope.row.projectName }}
           </div>
+          <!-- 
           <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
-          </div>
+            {{ scope.row.projectCode }}
+          </div> 
+          -->
       </template>
       </el-table-column>
-      <el-table-column label="告警描述" align="left" prop="description" />
-      <!-- 
-      <el-table-column label="告警链接" align="center" width="150" prop="category">
+      <el-table-column label="告警渠道" align="center" width="220" prop="category" :show-overflow-tooltip="true">
         <template #default="scope">
-          <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-pen-nib"></i>&nbsp;异常详情</el-button>
+          <div>
+            {{ scope.row.projectChannelName }}
+          </div>
+          <!--
+          <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+            {{ scope.row.category }}
+          </div>
+          -->
+        </template>
+      </el-table-column>
+      <el-table-column label="告警描述" align="left" prop="description" />
+      <el-table-column label="级别" align="center" width="100" prop="category">
+        <template #default="scope">
+          <span v-if="scope.row.level == '0'">
+            <el-button type="danger" bg link>重要</el-button>
+          </span>
+          <span v-else-if="scope.row.level == '1'">
+            <el-button type="danger" bg link>紧急</el-button>
+          </span>
+          <span v-else-if="scope.row.level == '2'">
+            <el-button type="warning" bg link>重要</el-button>
+          </span>
+          <span v-else-if="scope.row.level == '3'">
+            <el-button type="warning" bg link>一般</el-button>
+          </span>
+          <span v-else-if="scope.row.level == '4'">
+            <el-button type="info" bg link>低</el-button>
+          </span>
+          <span v-else>未知</span>
         </template>
       </el-table-column> 
-      -->
+      <!-- 
       <el-table-column label="状态" width="100" align="center" prop="status">
         <template #default="scope">
             <el-switch
@@ -124,13 +158,14 @@
               @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
             />
         </template>
-      </el-table-column>
-      <el-table-column label="详情" align="center" width="200" key="requestCount" prop="requestCount" :show-overflow-tooltip="true">
+      </el-table-column> 
+      -->
+      <el-table-column label="详情" align="center" width="100" key="requestCount" prop="requestCount" :show-overflow-tooltip="true">
           <template #default="scope">
-            <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-pen-nib"></i>&nbsp;异常详情</el-button>
+            <el-button type="primary" bg link @click="enterAppHome(scope.row)"> <i class="fa-solid fa-pen-nib"></i>&nbsp;详情</el-button>
           </template>
       </el-table-column>
-      <el-table-column label="发送时间" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+      <el-table-column label="告警时间" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.timestamp) }}</span>
         </template>

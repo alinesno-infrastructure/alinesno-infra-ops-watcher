@@ -15,9 +15,19 @@ public class WatcherConfiguration implements Serializable {
     private String projectCode ;
 
     /**
+     * 服务渠道接入类别
+     */
+    private String category ;
+
+    /**
      * 服务请求地址
      */
-    private String serverUrl ;
+    private String serverUrl = "http://localhost:30405" ;
+
+    /**
+     * 服务请求地址是否连接正常
+     */
+    private boolean isConnect ;
 
     /**
      * 最大请求等待队列大小
@@ -52,12 +62,12 @@ public class WatcherConfiguration implements Serializable {
     /**
      * 全局的请求连接超时时间，单位为毫秒
      */
-    private Integer connectTimeout;
+    private Integer connectTimeout = 45*1000;
 
     /**
      * 全局的请求读取超时时间，单位为毫秒
      */
-    private Integer readTimeout;
+    private Integer readTimeout = 60*1000;
 
     /**
      * 全局的最大请求失败重试次数

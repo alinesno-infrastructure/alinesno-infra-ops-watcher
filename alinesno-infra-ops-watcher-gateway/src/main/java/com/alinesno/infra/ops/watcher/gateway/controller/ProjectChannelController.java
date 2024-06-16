@@ -6,8 +6,9 @@ import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.login.account.CurrentAccountJwt;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.ops.watcher.entity.ProviderChannelEntity;
-import com.alinesno.infra.ops.watcher.service.IProviderChannelService;
+import com.alinesno.infra.ops.watcher.dto.ProjectChannelDto;
+import com.alinesno.infra.ops.watcher.entity.ProjectChannelEntity;
+import com.alinesno.infra.ops.watcher.service.IProjectChannelService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,24 +20,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 处理与ProviderChannelEntity相关的请求的Controller。
- * 继承自BaseController类并实现IProviderChannelService接口。
+ * 处理与ApplicationEntity相关的请求的Controller。
+ * 继承自BaseController类并实现IApplicationService接口。
  *
  * @author LuoXiaoDong
  * @version 1.0.0
  */
 @Slf4j
-@Api(tags = "ProviderChannel")
+@Api(tags = "Application")
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
-@RequestMapping("/api/infra/ops/watcher/provider_channel")
-public class ProviderChannelController extends BaseController<ProviderChannelEntity, IProviderChannelService> {
+@RequestMapping("/api/infra/ops/watcher/projectChannel")
+public class ProjectChannelController extends BaseController<ProjectChannelEntity, IProjectChannelService> {
 
     @Autowired
-    private IProviderChannelService service;
+    private IProjectChannelService service;
 
     /**
-     * 获取ProviderChannelEntity的DataTables数据。
+     * 获取ApplicationEntity的DataTables数据。
      *
      * @param request HttpServletRequest对象。
      * @param model   Model对象。
@@ -48,28 +49,31 @@ public class ProviderChannelController extends BaseController<ProviderChannelEnt
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
 
-        long userId = CurrentAccountJwt.getUserId();
-        long countGitRepository = service.count(new LambdaQueryWrapper<ProviderChannelEntity>().eq(ProviderChannelEntity::getOperatorId , userId));
+        long projectId = Long.parseLong(request.getParameter("projectId"));
+        long count = service.count(new LambdaQueryWrapper<ProjectChannelEntity>().eq(ProjectChannelEntity::getProjectId, projectId));
 
-        // 初始化用户仓库
-        if (countGitRepository == 0) {
-            service.initProviderChannel(CurrentAccountJwt.getUserId());
+        // 初始化默认应用
+        if (count == 0) {
+            service.initDefaultChannel(CurrentAccountJwt.getUserId() , projectId);
         }
 
         return this.toPage(model, this.getFeign(), page);
     }
 
+
     /**
-     * 列出所有渠道类型
-     * @return
+     * 保存项目预警渠道
+     * @param dto
      */
-    @GetMapping("/listAllChannel")
-    public AjaxResult listAllChannel(){
-        return AjaxResult.success(service.list()) ;
+    @PostMapping("/addProviderChannel")
+    public AjaxResult addProviderChannel(@RequestBody ProjectChannelDto dto) {
+        service.addProviderChannel(dto);
+        return AjaxResult.success("操作成功");
     }
 
+
     @Override
-    public IProviderChannelService getFeign() {
+    public IProjectChannelService getFeign() {
         return this.service;
     }
 }

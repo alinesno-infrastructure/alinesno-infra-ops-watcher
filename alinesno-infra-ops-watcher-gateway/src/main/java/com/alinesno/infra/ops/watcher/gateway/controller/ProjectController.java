@@ -72,6 +72,7 @@ public class ProjectController extends BaseController<ProjectEntity, IProjectSer
         service.saveDocumentType(projectId, documentStr);
     }
 
+
     /**
      * 获取默认应用地址
      * @return

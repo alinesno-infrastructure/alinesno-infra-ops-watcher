@@ -37,4 +37,12 @@ public interface IProjectService extends IBaseService<ProjectEntity> {
      * @return
      */
     ProjectEntity getDefaultProject(long userId);
+
+    /**
+     * 判断应用是否开启
+     * @param projectCode
+     * @return
+     */
+    boolean isOpen(String projectCode);
+
 }

@@ -53,7 +53,13 @@
                  </template>
               </el-table-column>
               <el-table-column label="应用描述" align="left" key="projectDesc" prop="projectDesc" v-if="columns[1].visible" />
-              <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true" />
+              <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                 <template #default="scope">
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
+                        {{ scope.row.projectCode}} <el-icon><CopyDocument /></el-icon>
+                     </div>
+                  </template>
+              </el-table-column>
 
               <el-table-column label="配置文档" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
@@ -63,12 +69,12 @@
                  </template>
               </el-table-column>
 
-              <el-table-column label="关闭" align="center" width="100" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="开启" align="center" width="100" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <el-switch
                        v-model="scope.row.hasStatus"
-                       :active-value="1"
-                       :inactive-value="0"
+                       :active-value="0"
+                       :inactive-value="1"
                        @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
                     />
                  </template>

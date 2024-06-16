@@ -1,12 +1,23 @@
 package com.alinesno.infra.ops.watcher.gateway.provider;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.json.JSONUtil;
 import com.alinesno.infra.common.facade.response.AjaxResult;
+import com.alinesno.infra.ops.watcher.dto.MsgDto;
 import com.alinesno.infra.ops.watcher.entity.AlertMessageEntity;
 import com.alinesno.infra.ops.watcher.entity.ReportEntity;
 import com.alinesno.infra.ops.watcher.service.IAlertMessageService;
+import com.alinesno.infra.ops.watcher.service.IProjectService;
 import com.alinesno.infra.ops.watcher.service.IReportService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * 报告控制器，处理异常告警消息和获取健康报告信息的接口
@@ -14,8 +25,9 @@ import org.springframework.web.bind.annotation.*;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@Slf4j
 @RestController
-@RequestMapping("/v1/api/watcher")
+@RequestMapping("/v1/infra/ops/watcher")
 public class WatcherController {
 
     @Autowired
@@ -24,16 +36,39 @@ public class WatcherController {
     @Autowired
     private IReportService reportService;
 
+    @Autowired
+    private IProjectService projectService ;
+
     /**
      * 接收异常告警消息并进行处理
      *
-     * @param alertMessage 异常告警消息实体
+     * @param msgDto 异常告警消息实体
      * @return 响应实体，表示异常告警消息接收成功
      */
     @PostMapping("/alert")
-    public AjaxResult receiveAlertMessage(@RequestBody AlertMessageEntity alertMessage) {
+    public AjaxResult receiveAlertMessage(@RequestBody @Validated MsgDto msgDto) {
+
+        log.debug("msgDto = {}" , msgDto);
+
+        boolean isProjectOpen = projectService.isOpen(msgDto.getProjectCode()) ;
+        Assert.isTrue(isProjectOpen , "应用"+msgDto.getProjectCode()+"已关闭，不再接收消息通知.");
+
+        AlertMessageEntity alertMessage = new AlertMessageEntity()  ;
+        BeanUtils.copyProperties(msgDto , alertMessage);
+
+        //时间戳转LocalDateTime
+        long time = msgDto.getTimestamp() ;
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneOffset.UTC);
+
+        alertMessage.setTimestamp(localDateTime);
+        alertMessage.setContext(JSONUtil.toJsonStr(msgDto.getContext()));
+        alertMessage.setEnvInfo(JSONUtil.toJsonStr(msgDto.getEnvInfo()));
+
+        log.debug("alertMessage = {}" , alertMessage);
+
         alertMessageService.processAlertMessage(alertMessage);
-        return AjaxResult.success("Alert message received successfully.");
+
+        return AjaxResult.success("预警消息接收成功.");
     }
 
     /**

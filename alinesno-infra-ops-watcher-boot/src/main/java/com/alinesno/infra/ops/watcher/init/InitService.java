@@ -4,7 +4,6 @@ import com.alinesno.infra.ops.watcher.entity.AlertMessageEntity;
 import com.alinesno.infra.ops.watcher.entity.AlertTemplateEntity;
 import com.alinesno.infra.ops.watcher.enums.AlertChannelEnum;
 import com.alinesno.infra.ops.watcher.enums.AlertLevelEnum;
-import com.alinesno.infra.ops.watcher.service.IAlertChannelParamService;
 import com.alinesno.infra.ops.watcher.service.IAlertMessageService;
 import com.alinesno.infra.ops.watcher.service.IAlertTemplateService;
 import lombok.extern.slf4j.Slf4j;
@@ -147,7 +146,7 @@ public class InitService {
 
         for (int i = 1; i <= 20; i++) {
             AlertMessageEntity alert = new AlertMessageEntity();
-            alert.setSource("实例_" + i);
+            alert.setDescription("实例_" + i);
 
             // 随机选择告警级别
             int levelIndex = random.nextInt(3); // 0: 严重, 1: 警告, 2: 信息

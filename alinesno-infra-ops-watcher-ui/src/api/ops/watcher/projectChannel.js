@@ -9,11 +9,11 @@ import { parseStrEmpty } from "@/utils/ruoyi";
  */
 
 // 接口配置项
-var prefix = '/api/infra/ops/watcher/provider_channel/' ;
+var prefix = '/api/infra/ops/watcher/projectChannel/' ;
 var managerUrl = {
     datatables : prefix +"datatables" ,
     createUrl: prefix + 'add' ,
-    saveUrl: prefix + 'save' ,
+    saveUrl: prefix + 'addProviderChannel' ,
     updateUrl: prefix +"modify" ,
     statusUrl: prefix +"changeStatus" ,
     cleanUrl: prefix + "clean",
@@ -21,16 +21,7 @@ var managerUrl = {
     removeUrl: prefix + "delete" ,
     exportUrl: prefix + "exportExcel",
     changeField: prefix + "changeField",
-    listAllChannel: prefix + "listAllChannel",
     downloadfile: prefix + "downloadfile"
-}
-
-// 列出所有集成渠道
-export function listAllChannel(){
-  return request({
-    url: managerUrl.listAllChannel , 
-    method: 'get'
-  })
 }
 
 // 修改字段
@@ -43,16 +34,16 @@ export function changStatusField(data){
 }
 
 // 查询数据库列表
-export function listChannel(query) {
+export function listProjectChannel(query , projectId) {
   return request({
-    url: managerUrl.datatables ,
+    url: managerUrl.datatables + '?projectId=' + parseStrEmpty(projectId) ,
     method: 'post',
     params: query
   })
 }
 
 // 查询数据库详细
-export function getChannel(databaseId) {
+export function getProjectChannel(databaseId) {
   return request({
     url: managerUrl.detailUrl + '/' + parseStrEmpty(databaseId),
     method: 'get'
@@ -60,7 +51,7 @@ export function getChannel(databaseId) {
 }
 
 // 新增数据库
-export function addChannel(data) {
+export function addProjectChannel(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -69,7 +60,7 @@ export function addChannel(data) {
 }
 
 // 修改数据库
-export function updateChannel(data) {
+export function updateProjectChannel(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -78,7 +69,7 @@ export function updateChannel(data) {
 }
 
 // 删除数据库
-export function delChannel(databaseId) {
+export function delProjectChannel(databaseId) {
   return request({
     url: managerUrl.removeUrl + '/' + parseStrEmpty(databaseId),
     method: 'delete'

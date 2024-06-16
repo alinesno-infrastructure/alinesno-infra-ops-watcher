@@ -1,21 +1,80 @@
 package com.alinesno.infra.ops.watcher.sdk.dto;
 
+import com.alinesno.infra.ops.watcher.sdk.enums.AlertLevelEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * 监控的异常信息
+ * 该类表示一个监控消息，用于封装异常或监控事件的相关信息。
  */
+@NoArgsConstructor
 @Data
 public class Msg {
 
-    // -->>>>>>>>>>>>>> 用户填写部分 -->>>>>>>>>>>>.
-    private String alarmName ; //	可选	告警标题，alarmName与eventId不能同时为空
-    private String alarmContent	 ; //	必须	告警内容详情
-    // -->>>>>>>>>>>>>> 用户填写部分 -->>>>>>>>>>>>.
+    /**
+     * 异常或事件的描述信息。
+     */
+    private String description;
 
-    private String projectCode ; //	必须	需要告警集成的项目代码
-    private String level ; //	可选	提醒 1，警告 2，严重 3，通知 4，致命 5
-    private Env env ; // 运行环境
-    private String contexts ; //	可选	上下文
+    /**
+     * 异常的错误信息，通常为异常堆栈的简要描述。
+     */
+    private String errorMsg;
 
+    /**
+     * 异常或事件的分类，用于对问题进行初步归类。
+     */
+    private String category; // 预警信息分类
+
+    /**
+     * 项目的唯一标识码。
+     */
+    private String projectCode ;
+
+    /**
+     * 异常或事件的等级，用于区分不同严重程度的问题。
+     * 默认为重要等级。
+     */
+    private String level = AlertLevelEnum.IMPORTANT.getCode() ;
+
+
+    /**
+     * 异常或事件发生的时间戳。
+     */
+    private long timestamp;
+
+    /**
+     * 异常上下文信息，用于提供问题发生的上下文环境，如相关的请求ID等。
+     */
+    private String context;
+
+    /**
+     * 环境信息，用于描述问题发生的环境，如生产环境、测试环境等。
+     */
+    private String envInfo;
+
+    /**
+     * 构造函数，用于创建一个包含描述、错误信息和等级的监控消息。
+     *
+     * @param description 异常或事件的描述。
+     * @param errorMsg 异常的错误信息。
+     * @param level 异常或事件的等级。
+     */
+    public Msg(String description, String errorMsg, String level) {
+        this.description = description;
+        this.errorMsg = errorMsg;
+        this.level = level;
+    }
+
+    /**
+     * 构造函数，用于创建一个包含描述和等级的监控消息。
+     *
+     * @param description 异常或事件的描述。
+     * @param level 异常或事件的等级。
+     */
+    public Msg(String description, String level) {
+        this.description = description;
+        this.level = level;
+    }
 }
+
