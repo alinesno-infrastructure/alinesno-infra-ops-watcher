@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
-//import Layout from '@/layout/SaaSLayout'
-import Layout from '@/layout'
+import Layout from '@/layout/SaaSLayout'
+//import Layout from '@/layout'
 
 /**
  * Note: 路由配置项
@@ -65,12 +65,6 @@ export const constantRoutes = [
         name: '/dashboard/smartService',
         meta: { title: '智能客服', icon: 'dashboard', affix: true }
       },
-      // {
-        // path: '/dashboard/serviceList',
-        // component: () => import('@/views/serviceList'),
-        // name: '/dashboard/serviceList',
-        // meta: { title: '服务列表', icon: 'dashboard', affix: true }
-      // },
       {
         path: '/dashboard/suportTechnique',
         component: () => import('@/views/suportTechnique'),
@@ -91,6 +85,62 @@ export const constantRoutes = [
         name: '/project/space',
         meta: { title: '项目告警空间', icon: 'dashboard', affix: true }
       },
+
+        // 新增路由（从 menuItems）
+        {
+          path: '/alerts',
+          component: () => import('@/views/ops/watcher/alerts/index'),
+          name: 'Alerts',
+          meta: { title: '告警事件', icon: 'fa-solid fa-triangle-exclamation', affix: true }
+        },
+        {
+          path: '/pipelines',
+          component: () => import('@/views/ops/watcher/pipelines/index'),
+          name: 'Pipelines',
+          meta: { title: '自动化流水线', icon: 'fa-solid fa-industry', affix: true }
+        },
+        {
+          path: '/infrastructure',
+          component: () => import('@/views/ops/watcher/infrastructure/index'),
+          name: 'Infrastructure',
+          meta: { title: '基础设施', icon: 'fa-solid fa-building-columns', affix: true }
+        },
+        {
+          path: '/metrics',
+          component: () => import('@/views/ops/watcher/metrics/index'),
+          name: 'Metrics',
+          meta: { title: '运行指标', icon: 'fa-solid fa-chart-line', affix: true }
+        },
+        {
+          path: '/logs',
+          component: () => import('@/views/ops/watcher/logs/index'),
+          name: 'Logs',
+          meta: { title: '日志监控', icon: 'fa-solid fa-file-lines', affix: true }
+        },
+        {
+          path: '/apm',
+          component: () => import('@/views/ops/watcher/apm/index'),
+          name: 'Apm',
+          meta: { title: '应用性能监控', icon: 'fa-solid fa-code-pull-request', affix: true }
+        },
+        {
+          path: '/userAccess',
+          component: () => import('@/views/ops/watcher/userAccess/index'),
+          name: 'UserAccess',
+          meta: { title: '用户访问监控', icon: 'fa-solid fa-user-check', affix: true }
+        },
+        {
+          path: '/inspection',
+          component: () => import('@/views/ops/watcher/inspection/index'),
+          name: 'Inspection',
+          meta: { title: '巡检监控', icon: 'fa-solid fa-wand-magic-sparkles', affix: true }
+        },
+        {
+          path: '/integration',
+          component: () => import('@/views/ops/watcher/integration/index'),
+          name: 'Integration',
+          meta: { title: '集成', icon: 'fa-solid fa-puzzle-piece', affix: true }
+        },
     ]
   },
   {
