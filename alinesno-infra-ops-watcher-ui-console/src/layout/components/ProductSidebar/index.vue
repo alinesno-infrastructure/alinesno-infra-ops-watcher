@@ -1,26 +1,20 @@
 <template>
   <div class="siderbar">
     <el-menu default-active="1" class="el-menu-vertical" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
-      <el-menu-item index="1" @click="jumpTo">
-        <i class="fa-solid fa-desktop"></i>
-      </el-menu-item>
 
-      <el-menu-item index="2" @click="openServiceList">
-        <i class="fa-solid fa-sailboat"></i>
-      </el-menu-item>
-
-      <el-menu-item index="3" @click="openSmartService">
-        <i class="fa-solid fa-user-shield"></i>
-      </el-menu-item>
+      <el-tooltip effect="dark" :content="item.desc" v-for="item in menuItems" :key="item.id" placement="right">
+        <el-menu-item :index="item.id" @click="openServiceList(item.link)">
+          <i :class="item.icon"></i>
+        </el-menu-item>
+      </el-tooltip>
     </el-menu>
 
     <el-menu style="" class="el-menu-vertical acp-suggest" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
-      <el-menu-item index="11" @click="jumpToConstomTheme">
-        <i class="fa-solid fa-file-pen"></i>
-      </el-menu-item>
-      <el-menu-item index="12" @click="dialogVisible = true">
-        <i class="fa-solid fa-paper-plane"></i>
-      </el-menu-item>
+      <el-tooltip effect="dark" content="优化建议" placement="right">
+        <el-menu-item index="12" @click="dialogVisible = true">
+          <i class="fa-solid fa-paper-plane"></i>
+        </el-menu-item>
+      </el-tooltip>
     </el-menu>
 
     <!-- 建议和反馈 -->
@@ -43,7 +37,6 @@
         </el-form-item>
 
       </el-form>
-
     </el-dialog>
 
   </div>
@@ -54,15 +47,19 @@
 const dialogVisible = ref(false)
 const router = useRouter();
 
-// 打开客户配置
-function jumpToConstomTheme() {
-  router.push({ path: "/dashboard/dashboardTheme" });
-}
-
-// 打开服务市场
-function openServiceList() {
-  router.push({ path: "/dashboard/serviceList" });
-}
+// 菜单列表
+const menuItems = ref([
+  { id: '1', icon: 'fa-solid fa-gauge-high', link: '/index', desc: '仪表盘' },
+  { id: '2', icon: 'fa-solid fa-triangle-exclamation', link: '/alerts', desc: '告警事件' },
+  { id: '3', icon: 'fa-solid fa-industry', link: '/pipelines', desc: '自动化流水线' },
+  { id: '4', icon: 'fa-solid fa-building-columns', link: '/infrastructure', desc: '基础设施' },
+  { id: '5', icon: 'fa-solid fa-chart-line', link: '/metrics', desc: '运行指标' },
+  { id: '6', icon: 'fa-solid fa-file-lines', link: '/logs', desc: '日志监控' },
+  { id: '7', icon: 'fa-solid fa-code-pull-request', link: '/apm', desc: '应用性能监控' },
+  { id: '8', icon: 'fa-solid fa-user-check', link: '/userAccess', desc: '用户访问监控' },
+  { id: '9', icon: 'fa-solid fa-wand-magic-sparkles', link: '/inspection', desc: '巡检监控' },
+  { id: '10', icon: 'fa-solid fa-puzzle-piece', link: '/integration', desc: '集成' },
+]);
 
 // 打开首页
 function jumpTo() {
@@ -72,6 +69,11 @@ function jumpTo() {
 // 打开智能客服
 function openSmartService() {
   router.push({ path: "/dashboard/smartService" });
+}
+
+// 打开服务市场
+function openServiceList(_path) {
+  router.push({ path: _path });
 }
 
 </script>
