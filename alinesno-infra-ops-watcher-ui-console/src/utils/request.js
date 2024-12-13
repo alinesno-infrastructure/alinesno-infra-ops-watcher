@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import { getToken , getSaToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
@@ -17,7 +17,7 @@ const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: import.meta.env.VITE_APP_BASE_API,
   // 超时
-  timeout: 10000
+  timeout: 120000
 })
 
 // request拦截器
@@ -28,7 +28,6 @@ service.interceptors.request.use(config => {
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    config.headers['satoken'] = 'Bearer ' + getSaToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   // get请求映射params参数
   if (config.method === 'get' && config.params) {
@@ -50,13 +49,13 @@ service.interceptors.request.use(config => {
       const s_url = sessionObj.url;                // 请求地址
       const s_data = sessionObj.data;              // 请求数据
       const s_time = sessionObj.time;              // 请求时间
-      const interval = 200;                       // 间隔时间(ms)，小于此时间视为重复提交
+      const interval = 100;                       // 间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
         const message = '数据正在处理，请勿重复提交';
         console.warn(`[${s_url}]: ` + message)
         return Promise.reject(new Error(message))
       } else {
-        cache.session.setJSON('sessionObj', requestObj)
+        // cache.session.setJSON('sessionObj', requestObj)
       }
     }
   }
