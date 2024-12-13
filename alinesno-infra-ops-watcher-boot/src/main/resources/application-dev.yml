@@ -5,6 +5,7 @@ server:
 spring:
   application:
     name: alinesno-infra-ops-watcher-boot
+    id: 1865936259484930048
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dev_alinesno_infra_ops_watcher_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL
@@ -31,9 +32,23 @@ actable:
   unique:
     prefix: alinesno_ops_watcher_uni_
 
+# wechat token
+alinesno:
+  security:
+    # 排除路径
+    excludes:
+      - /sso/**
+      - /logout
+  infra:
+    gateway:
+      host: http://alinesno-infra-base-gateway-proxy-application.beta.base.infra.linesno.com
+  data:
+    scheduler:
+      workspacePath: ${user.home}/.infra-data-scheduler
+
 # sa-token配置
 sa-token:
-  token-name: satoken
+  token-name: Authorization
   host-path: http://alinesno-infra-base-identity-auth-application.beta.base.infra.linesno.com
   sso:
     auth-url: ${sa-token.host-path}/login
@@ -42,4 +57,4 @@ sa-token:
     slo-url: ${sa-token.host-path}/sso/signout
     get-data-url: ${sa-token.host-path}/sso/getData
   sign:
-    secret-key:
+    secret-key: kQwIOrYvnXmSDkwEiFngrKidMcdrgKor
