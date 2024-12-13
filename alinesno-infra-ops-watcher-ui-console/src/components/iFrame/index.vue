@@ -23,7 +23,7 @@ const url = computed(() => props.src)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false;
-  }, 300);
+  }, 2000);
   window.onresize = function temp() {
     height.value = document.documentElement.clientHeight - 94.5 + "px;";
   };
