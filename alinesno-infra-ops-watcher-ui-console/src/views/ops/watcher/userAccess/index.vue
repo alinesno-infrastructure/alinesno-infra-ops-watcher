@@ -23,7 +23,7 @@
                         </div>
                         <div class="head-container">
                             <!-- 使用element-plus tree 展示, 并自定义节点内容 -->
-                            <el-tree :data="monitorItem" 
+                            <el-tree :data="systemServices" 
                                 :props="defaultProps"  
                                 @node-click="handleNodeClick">
                                 <template #default="{ node, data }">
@@ -51,7 +51,7 @@ import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 
 // 监控地址
-const monitorUrl = ref("http://47.121.178.37:3000/d/5dB6Qz-ik/node-exporter-stats?orgId=1&timezone=browser&refresh=1m&theme=dark&kiosk");
+const monitorUrl = ref("http://grafana.infra.linesno.com/d/xfpJB9FGz/node-exporter-for-prometheus-dashboard-en-20201010?orgId=1&var-interval=10m&from=now-1h&to=now&timezone=browser&var-origin_prometheus=&var-job=prometheus&var-hostname=$__all&var-node=localhost:9100&var-device=$__all&var-maxmount=%2F&var-show_hostname=izm5e9pfu150pegnyjwluaz&var-total=2&var-Filters=&kiosk");
 
 // 搜索表单数据
 const searchForm = ref({
@@ -70,51 +70,83 @@ const defaultProps = {
 };
 
 // 监控列表
-const monitorItem = ref([
+const systemServices = ref([
     {
         "id": 101,
         "label": "监控总览",
+        "desc": "监控总览",
         "children": [
             {
                 "id": 103,
                 "label": "服务器监控",
-                "desc": "服务器性能和状态的实时监控"
-            },
-            {
-                "id": 104,
-                "label": "网络监控",
-                "desc": "网络流量和连接性的实时监控"
+                "desc": "服务器性能和状态的实时监控",
+                "link": ""
             }
         ]
     },
     {
-        "id": 103,
-        "label": "中间件监控",
+        "id": 1,
+        "label": "基础技术服务",
         "children": [
-            {
-                "id": 209,
-                "label": "注册中心监控"
-            },
-            {
-                "id": 211,
-                "label": "日志监控"
-            },
-            {
-                "id": 210,
-                "label": "反向代理"
-            },
-            {
-                "id": 210,
-                "label": "分布式配置中心"
-            },
-            {
-                "id": 208,
-                "label": "缓存监控"
-            },
-            {
-                "id": 209,
-                "label": "消息中间件"
-            }
+            { "id": 101, "label": "权限配置服务", "desc": "alinesno-infra-base-authority", "link": "" },
+            { "id": 102, "label": "代码生成器", "desc": "alinesno-infra-base-starter", "link": "" },
+            { "id": 103, "label": "分布式配置服务", "desc": "alinesno-infra-base-config", "link": "" },
+            { "id": 104, "label": "事务消息服务", "desc": "alinesno-infra-base-message", "link": "" },
+            { "id": 105, "label": "存储管理服务", "desc": "alinesno-infra-base-storage", "link": "" },
+            { "id": 106, "label": "单点登陆服务", "desc": "alinesno-infra-base-identity", "link": "" },
+            { "id": 107, "label": "网关配置服务", "desc": "alinesno-infra-base-gateway", "link": "" },
+            { "id": 108, "label": "文档搜索服务", "desc": "alinesno-infra-base-document", "link": "" },
+            { "id": 109, "label": "敏感词过滤服务", "desc": "alinesno-infra-base-sensitive", "link": "" },
+            { "id": 110, "label": "支付服务", "desc": "alinesno-infra-base-pay", "link": "" },
+            { "id": 111, "label": "内容服务", "desc": "alinesno-infra-base-cms", "link": "" }
+        ]
+    },
+    {
+        "id": 2,
+        "label": "大模型推理服务",
+        "children": [
+            { "id": 201, "label": "OCR视觉识别服务", "desc": "alinesno-infra-smart-ocr", "link": "" },
+            { "id": 202, "label": "自然语言识别服务", "desc": "alinesno-infra-smart-nlp", "link": "" },
+            { "id": 203, "label": "GPT推理服务", "desc": "alinesno-infra-smart-brain", "link": "" },
+            { "id": 205, "label": "智能助手服务", "desc": "alinesno-infra-smart-assistant", "link": "" },
+            { "id": 206, "label": "目标检测识别服务", "desc": "alinesno-infra-smart-detection", "link": "" }
+        ]
+    },
+    {
+        "id": 3,
+        "label": "运维维护服务",
+        "children": [
+            { "id": 301, "label": "自动化任务服务", "desc": "alinesno-infra-ops-scheduler", "link": "" },
+            { "id": 304, "label": "容器管理服务", "desc": "alinesno-infra-ops-container", "link": "" },
+            { "id": 305, "label": "监控预警服务", "desc": "alinesno-infra-ops-watcher", "link": "" }
+        ]
+    },
+    {
+        "id": 4,
+        "label": "数据业务服务",
+        "children": [
+            { "id": 402, "label": "实时推荐服务", "desc": "alinesno-infra-bus-recommend", "link": "" },
+            { "id": 403, "label": "实时画像服务", "desc": "alinesno-infra-bus-profiling", "link": "" }
+        ]
+    },
+    {
+        "id": 5,
+        "label": "运营服务",
+        "children": [
+            { "id": 501, "label": "基设平台管理服务", "desc": "alinesno-infra-plat-console", "link": "" },
+            { "id": 502, "label": "安全感触服务", "desc": "alinesno-infra-plat-security", "link": "" }
+        ]
+    },
+    {
+        "id": 6,
+        "label": "数据治理服务",
+        "children": [
+            { "id": 601, "label": "主数据服务", "desc": "alinesno-infra-data-mdm", "link": "" },
+            { "id": 602, "label": "数据上报服务", "desc": "alinesno-infra-data-report", "link": "" },
+            { "id": 603, "label": "数据集成服务", "desc": "alinesno-infra-data-pipeline", "link": "" },
+            { "id": 604, "label": "数据开发服务", "desc": "alinesno-infra-data-dolphinscheduler", "link": "" },
+            { "id": 605, "label": "实时计算服务", "desc": "alinesno-infra-data-stream", "link": "" },
+            { "id": 606, "label": "数据资产服务", "desc": "alinesno-infra-data-assets", "link": "" }
         ]
     }
 ]);
@@ -122,18 +154,4 @@ const monitorItem = ref([
 </script>
 
 <style scoped lang="scss">
-.custom-tree-node {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding-right: 8px;
-
-    .desc {
-        color: #999; // 设置描述文字颜色
-        font-size: 12px;
-        margin-left: 10px;
-    }
-}
 </style>
