@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="acp-dashboard-panel" :gutter="20">
-      <el-col class="panel-col" :span="19">
+      <el-col class="panel-col" :span="17">
         <div class="grid-content">
           <div class="panel-header">
             <div class="header-title"><i class="fa-solid fa-link"></i> 业务最新巡检</div>
@@ -25,7 +25,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="7">
         <div class="grid-content">
           <div class="panel-header">
             <div class="header-title"><i class="fa-solid fa-link"></i> 应用场景</div>
@@ -39,7 +39,7 @@
                       <i :class="item.icon" :alt="item.name" />
                         {{ item.name }}
                     </div>
-                    <div class="app-item desc">{{ item.description }}</div>
+                    <div style="margin-top: 10px;" class="app-item desc">{{ item.description }}</div>
                   </div>
                 </li>
               </ul>
