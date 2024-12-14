@@ -1,8 +1,40 @@
 <template>
     <div class="app-container">
        <el-row :gutter="20">
+
+                  <!--分类-->
+               <el-col :span="4" :xs="24">
+
+                  <div class="head-container">
+                     <!-- 查询条件 -->
+                     <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+                        <el-row>
+                           <el-col :span="19">
+                              <el-form-item label="监控项目">
+                                 <el-input placeholder="请输入部门名称"></el-input>
+                              </el-form-item>
+                           </el-col>
+                           <el-col :span="5">
+                              <el-form-item>
+                                 <el-button type="primary" text bg @click="onSubmit">查询</el-button>
+                              </el-form-item>
+                           </el-col>
+                        </el-row>
+                     </el-form>
+                  </div>
+
+                  <!-- 告警分类 -->
+                  <div class="type-card-box">
+                     <div v-for="(item, index) in operationInspectionTypes" :key="index" class="monitor-item-type-box">
+                        <span style="color:#3b5998"><i :class="['fa-solid', item.icon]"></i></span>
+                        <span>{{ item.title }}</span>
+                     </div>
+                  </div>
+
+                  </el-col>
+
           <!--应用数据-->
-          <el-col :span="24" :xs="24">
+          <el-col :span="20" :xs="24">
              <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
                 <el-form-item label="应用名称" prop="typeName">
                    <el-input v-model="queryParams.typeName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
@@ -252,6 +284,65 @@
   
   const { editForm } = toRefs(state);
   const currentChannelId = ref(null);
+
+  const operationInspectionTypes = ref([
+    {
+        title: '基础架构巡检',
+        icon: 'fa-server',
+        desc: '检查服务器、网络设备等基础设施的状态和性能'
+    },
+    {
+        title: '应用服务巡检',
+        icon: 'fa-code',
+        desc: '评估应用程序的运行状态，包括服务可用性、响应时间和错误率'
+    },
+    {
+        title: '等保安全巡检',
+        icon: 'fa-shield-alt',
+        desc: '审查系统的安全性，包括漏洞扫描、安全配置检查和访问控制'
+    },
+    {
+        title: '数据库巡检',
+        icon: 'fa-database',
+        desc: '监控数据库的性能和健康状况，如查询效率、存储使用情况等'
+    },
+    {
+        title: '中间件巡检',
+        icon: 'fa-cogs',
+        desc: '检查消息队列、缓存系统等中间件的服务状态和性能指标'
+    },
+    {
+        title: '日志容器巡检',
+        icon: 'fa-file-alt',
+        desc: '分析系统和应用日志，查找异常模式和潜在问题'
+    },
+    {
+        title: '备份与恢复巡检',
+        icon: 'fa-copy',
+        desc: '验证数据备份的有效性，并测试灾难恢复流程'
+    },
+    {
+        title: '性能优化巡检',
+        icon: 'fa-bolt',
+        desc: '识别性能瓶颈并实施优化措施以提高系统效率'
+    },
+    {
+        title: '合规性巡检',
+        icon: 'fa-gavel',
+        desc: '确保系统符合相关法律法规和行业标准的要求'
+    },
+    {
+        title: '第三方服务巡检',
+        icon: 'fa-plug',
+        desc: '检查外部API和服务的可用性和响应时间，确保其满足服务水平协议(SLA)'
+    },
+    {
+        title: '容量规划巡检',
+        icon: 'fa-expand-arrows-alt',
+        desc: '预测资源需求，规划硬件和软件资源的扩展'
+    },
+]);
+
   
   // 点击加号:添加一行header
   const addHeaderRow = () => {
