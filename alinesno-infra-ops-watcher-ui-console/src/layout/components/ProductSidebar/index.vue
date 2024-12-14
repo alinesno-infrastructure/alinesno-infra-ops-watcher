@@ -49,15 +49,15 @@ const router = useRouter();
 
 // 菜单列表
 const menuItems = ref([
-  { id: '1', icon: 'fa-solid fa-gauge-high', link: '/index', desc: '仪表盘' },
-  { id: '2', icon: 'fa-solid fa-triangle-exclamation', link: '/alerts', desc: '告警事件' },
+  { id: '1', icon: 'fa-solid fa-house-user', link: '/index', desc: '仪表盘' },
+  { id: '2', icon: 'fa-solid fa-truck-medical', link: '/alerts', desc: '告警事件' },
   { id: '3', icon: 'fa-solid fa-industry', link: '/pipelines', desc: '自动化流水线' },
-  { id: '4', icon: 'fa-solid fa-building-columns', link: '/infrastructure', desc: '基础设施' },
+  { id: '4', icon: 'fa-solid fa-ship', link: '/infrastructure', desc: '基础设施' },
   { id: '5', icon: 'fa-solid fa-chart-line', link: '/metrics', desc: '运行指标' },
   { id: '6', icon: 'fa-solid fa-file-lines', link: '/logs', desc: '日志监控' },
   { id: '7', icon: 'fa-solid fa-code-pull-request', link: '/apm', desc: '应用性能监控' },
-  { id: '8', icon: 'fa-solid fa-user-check', link: '/userAccess', desc: '用户访问监控' },
   { id: '9', icon: 'fa-solid fa-wand-magic-sparkles', link: '/inspection', desc: '巡检监控' },
+  { id: '8', icon: 'fa-solid fa-user-check', link: '/userAccess', desc: '用户访问监控' },
   { id: '10', icon: 'fa-solid fa-puzzle-piece', link: '/integration', desc: '集成' },
 ]);
 
