@@ -49,9 +49,10 @@
 import iFrame from "@/components/iFrame/index";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
+import {ref} from "vue";
 
 // 监控地址
-const monitorUrl = ref("http://47.121.178.37:3000/d/5dB6Qz-ik/node-exporter-stats?orgId=1&timezone=browser&refresh=1m&theme=dark&kiosk");
+const monitorUrl = ref("http://grafana.infra.linesno.com/d/UDdpyzz7z/prometheus-2-0-stats?orgId=1&from=2024-12-13T23:06:26.677Z&to=2024-12-14T00:06:26.677Z&timezone=browser&refresh=1m&theme=dark&kiosk");
 
 // 搜索表单数据
 const searchForm = ref({
@@ -78,10 +79,38 @@ const monitorItem = ref([
             {
                 "id": 103,
                 "label": "服务器监控",
-                "desc": "服务器性能和状态的实时监控"
+                "desc": "服务器性能和状态的实时监控" ,
+                "link": "http://grafana.infra.linesno.com/d/xfpJB9FGz/node-exporter-for-prometheus-dashboard-en-20201010?orgId=1&refresh=1m&kiosk"
             },
             {
                 "id": 104,
+                "label": "网络监控",
+                "desc": "网络流量和连接性的实时监控" ,
+                "link": "http://grafana.infra.linesno.com/d/rYdddlPWk/node-exporter-full?orgId=1&refresh=1m&kiosk "
+            }
+        ]
+    },
+    {
+        "id": 102,
+        "label": "Kubernetes集群",
+        "children": [
+            {
+                "id": 105,
+                "label": "容器监控",
+                "desc": "Docker、Pod等容器资源的使用情况和健康状态"
+            },
+            {
+                "id": 106,
+                "label": "K8S集群监控",
+                "desc": "Kubernetes集群的状态、节点健康状况及资源分配"
+            },
+            {
+                "id": 107,
+                "label": "服务器监控",
+                "desc": "服务器性能和状态的实时监控"
+            },
+            {
+                "id": 108,
                 "label": "网络监控",
                 "desc": "网络流量和连接性的实时监控"
             }
@@ -92,48 +121,45 @@ const monitorItem = ref([
         "label": "中间件监控",
         "children": [
             {
-                "id": 209,
-                "label": "注册中心监控"
-            },
-            {
                 "id": 211,
-                "label": "日志监控"
+                "label": "分析数据库(clickhouse)",
+                "desc": "系统和应用程序日志的收集与分析"
             },
             {
-                "id": 210,
-                "label": "反向代理"
+                "id": 212,
+                "label": "反向代理(Nginx)",
+                "desc": "反向代理服务器的性能和状态",
+                "link": "http://grafana.infra.linesno.com/d/MsjffzSZz/nginx3?orgId=1&refresh=1m&kiosk"
             },
             {
-                "id": 210,
-                "label": "分布式配置中心"
+                "id": 213,
+                "label": "分布式配置中心",
+                "desc": "配置管理和服务配置同步的监控"
             },
             {
                 "id": 208,
-                "label": "缓存监控"
+                "label": "分布式索引存储(ES)",
+                "desc": "缓存系统的命中率和性能指标",
+                "link": "http://grafana.infra.linesno.com/d/n_nxrE_mk/elasticsearch?orgId=1&refresh=1m&kiosk "
             },
             {
-                "id": 209,
-                "label": "消息中间件"
+                "id": 210,
+                "label": "消息缓存(Redis)",
+                "desc": "消息队列的吞吐量和延迟",
+                "link": "http://grafana.infra.linesno.com/d/JIeHsmmYMk/redis-exporter-dashboard-cn-20221128-starsl-cn?orgId=1&refresh=1m&kiosk "
             }
         ]
     }
 ]);
 
+/** 打开节点 **/
+function handleNodeClick(data){
+  if(data.link){
+    monitorUrl.value = data.link ;
+  }
+}
+
 </script>
 
 <style scoped lang="scss">
-.custom-tree-node {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding-right: 8px;
-
-    .desc {
-        color: #999; // 设置描述文字颜色
-        font-size: 12px;
-        margin-left: 10px;
-    }
-}
 </style>
