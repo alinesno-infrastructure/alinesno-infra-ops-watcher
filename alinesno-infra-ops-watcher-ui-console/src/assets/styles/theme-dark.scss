@@ -1,7 +1,7 @@
 @import 'element-plus/theme-chalk/dark/css-vars.css' ;
 
 $dark-bg-color: #1d1e1f;
-$dark-bg-panel: #21252b;
+$dark-bg-panel: rgb(17, 18, 23);
 $dark-text-color: #E5EAF3;
 $dark-border-color:  rgba(204, 204, 220, 0.12);
 
@@ -180,4 +180,8 @@ html.dark {
         font-size: 12px;
         margin-left: 10px;
     }
+}
+
+.acp-support-container .cttll{
+    color: $dark-text-color !important;
 }
