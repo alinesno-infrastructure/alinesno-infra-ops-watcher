@@ -86,7 +86,7 @@ $chartColor: #3b5998 ;
     z-index: 1;
     width: calc($chartWidth - 10px);
     height: calc($chartWidth - 10px);
-    background: #fff !important;
+    // background: #fff !important;
     border-radius: 60% 60% 60% 60%;
     color: $chartColor;
   }
