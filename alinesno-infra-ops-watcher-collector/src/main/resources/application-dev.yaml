@@ -1,0 +1,6 @@
+server:
+  port: 5316
+
+spring:
+  application:
+    name: alinesno-infra-ops-watcher-collector
