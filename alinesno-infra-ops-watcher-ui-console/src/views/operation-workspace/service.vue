@@ -2,7 +2,7 @@
   <div>
     <el-row class="acp-dashboard-panel" :gutter="20">
 
-      <el-col :span="19">
+      <el-col :span="17">
 
         <div class="grid-content">
           <div class="panel-header">
@@ -26,16 +26,16 @@
 
       </el-col>
 
-      <el-col :span="5">
+      <el-col :span="7">
         <div class="grid-content">
           <div class="panel-header">
-            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 接口调用统计</div>
+            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 监控统计</div>
           </div>
           <div class="panel-body acp-height-auto">
             <ul class="panel-item-text">
-              <li style="width:calc(50% - 20px);margin:10px;padding:10px;" v-for="item in opertionAssets" :key="item.id">
+              <li style="width:calc(50% - 20px);margin:10px;padding:10px;" v-for="item in commonFeatures" :key="item.id">
                 <div class="item-health-box">
-                  <div class="item-health-title">{{ item.title }}</div>
+                  <div class="item-health-title">{{ item.label }}</div>
                   <div class="item-health-count">{{ item.count }}</div>
                 </div>
               </li>
@@ -55,13 +55,38 @@ import * as echarts from "echarts";
 /// 声明定义一下echart
 const echart = echarts;
 
-const opertionAssets = ref([
-  {id:'1' , title:'异常告警信息' , count:45} ,
-  {id:'2' , title:'正常运行信息' , count:145} ,
-  {id:'3' , title:'告警发送成功' , count:65} ,
-  {id:'4' , title:'告警发送失败' , count:85} ,
-  {id:'5' , title:'事件提醒次数' , count:45} ,
-])
+const commonFeatures = ref([
+    {
+        id: '1',
+        label: '异常告警信息',
+        count: 45,
+        icon: 'fa-exclamation-triangle'
+    },
+    {
+        id: '2',
+        label: '正常运行信息',
+        count: 145,
+        icon: 'fa-check-circle'
+    },
+    {
+        id: '3',
+        label: '告警发送成功',
+        count: 65,
+        icon: 'fa-paper-plane'
+    },
+    {
+        id: '4',
+        label: '告警发送失败',
+        count: 85,
+        icon: 'fa-exclamation-circle'
+    },
+    {
+        id: '5',
+        label: '事件提醒次数',
+        count: 45,
+        icon: 'fa-bell'
+    }
+]);
 
 function drawBar2() {
       let barChart = echart.init(
