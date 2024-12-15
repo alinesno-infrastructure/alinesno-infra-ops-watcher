@@ -28,7 +28,9 @@
 
         <module>alinesno-infra-ops-watcher-channel</module> <!-- 监控渠道集成 -->
         <module>alinesno-infra-ops-watcher-alert</module> <!-- 通知渠道 -->
-        <module>alinesno-infra-ops-watcher-collector</module> <!-- 数据采集 -->
+
+        <module>alinesno-infra-ops-watcher-collector-application</module> <!-- 数据采集 -->
+
         <module>alinesno-infra-ops-watcher-logger</module> <!-- 日志处理 -->
         <module>alinesno-infra-ops-watcher-report</module> <!-- grafana报表展示 -->
         <module>alinesno-infra-ops-watcher-resource</module> <!-- 资源(文件/脚本/工具等)管理 -->
