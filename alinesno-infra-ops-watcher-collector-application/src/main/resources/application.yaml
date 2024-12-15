@@ -1,0 +1,28 @@
+server:
+  port: 5316
+
+spring:
+  application:
+    name: alinesno-infra-ops-watcher-collector
+  datasource:
+    driver-class-name: com.clickhouse.jdbc.ClickHouseDriver # 更改为ClickHouse驱动
+    url: jdbc:clickhouse://localhost:8123/default # ClickHouse默认端口为8123，默认数据库为"default"
+    username: default # ClickHouse默认用户名
+    password: adminer # 如果设置了密码，请在这里填写
+  sql:
+    init:
+      mode: ALWAYS
+      encoding: utf-8
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      continueOnError: true
+      schemaLocations: classpath:data/schema.sql
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: aip@local
+
+  devtools:
+    restart:
+      enabled: true
