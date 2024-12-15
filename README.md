@@ -23,6 +23,20 @@
 - 巡检监控：应用巡检还有业务巡检 还有各项巡检的结果（通过自动化流水线获取到结果）
 - 集成：三方集成的方式
 
+## 测试
+
+```shell
+java \
+    -javaagent:~/m2/devtool/openTelemetry/opentelemetry-javaagent-1.29.0.jar \
+    -Dotel.resource.attributes=service.name=demo-watcher \
+    -Dotel.exporter.otlp.headers=Authentication=123456 \
+    -Dotel.traces.exporter=otlp \
+    -Dotel.metrics.exporter=otlp \
+    -Dotel.logs.exporter=otlp \
+    -Dotel.exporter.otlp.endpoint=http://localhost:4316 \
+    -jar target/demo-watcher-0.0.1-SNAPSHOT.jar
+```
+
 ## 部署配置
 
 > 针对于中小型团队场景，越简单越好
