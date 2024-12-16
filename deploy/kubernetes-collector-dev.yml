@@ -1,3 +1,4 @@
+# GRPC配置参考 https://help.aliyun.com/zh/ack/ack-managed-and-ack-dedicated/user-guide/use-an-ingress-controller-to-access-grpc-services
 # 创建service为${PROJECT_NAME}
 apiVersion: v1
 kind: Service
@@ -5,6 +6,7 @@ metadata:
   name: ${PROJECT_NAME}
   namespace: ${NAMESPACE}
 spec:
+  type: NodePort # 使用NodePort类型来暴露服务
   selector:
     app: ${PROJECT_NAME}
     release: canary
@@ -12,6 +14,11 @@ spec:
     - name: http
       targetPort: 8080
       port: 8080
+    - name: grpc
+      targetPort: 4316
+      protocol: TCP
+      port: 4316
+      nodePort: 32316 # 指定NodePort端口
 
 ---
 # 创建后端服务的pod
@@ -51,6 +58,7 @@ spec:
             - name: rest-api
               containerPort: 8080
             - name: otlp-api
+              protocol: TCP
               containerPort: 4316
 
 ---
@@ -74,6 +82,22 @@ spec:
                 name: ${PROJECT_NAME}
                 port:
                   number: 8080
+
+---
+# 创建域名服务
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-${PROJECT_NAME}-grpc
+  namespace: ${NAMESPACE}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m" # 增大代理主体大小
+    nginx.ingress.kubernetes.io/grpc-read-timeout: "600" # 可选：设置读取超时时间
+    nginx.ingress.kubernetes.io/grpc-send-timeout: "600" # 可选：设置发送超时时间
+spec:
+  rules:
     - host: "${PROJECT_NAME}.collector.${INFRA_DEV_DOMAIN}"
       http:
         paths:
