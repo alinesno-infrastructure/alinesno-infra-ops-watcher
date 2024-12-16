@@ -211,6 +211,12 @@
     </div>
   </div>
   <script type="module" src="/src/main.js"></script>
+
+  <!-- 前端监控 -->
+  <script src="http://data.linesno.com/monitor/log.js/2.0.1/log.min.js"></script>
+  <script>
+    log.init({ sendAddress: 'http://localhost:5316/api/logs/collect' });
+  </script>
 </body>
 
 </html>
