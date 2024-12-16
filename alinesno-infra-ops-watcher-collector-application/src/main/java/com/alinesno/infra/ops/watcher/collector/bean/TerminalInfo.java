@@ -7,7 +7,7 @@ public class TerminalInfo {
     /**
      * 终端分辨率。
      */
-    private String resolvingPower;
+    private String resolving_power;
 
     /**
      * 文档来源页面的URL。
