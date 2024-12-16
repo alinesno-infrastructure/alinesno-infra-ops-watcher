@@ -78,3 +78,5 @@ java \
 - [grafana](https://grafana.com/)
 - [filebeat](https://www.elastic.co/cn/products/beats/filebeat)
 - [spring-boot](https://spring.io/projects/spring-boot)
+- [log.js](https://gitee.com/clark-fl/log.js)
+- [wf_monitor](https://www.webfunny.cn/wf_monitor/home.html)
