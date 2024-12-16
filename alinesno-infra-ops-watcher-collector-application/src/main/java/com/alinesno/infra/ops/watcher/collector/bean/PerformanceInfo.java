@@ -5,42 +5,52 @@ import lombok.Data;
 @Data
 public class PerformanceInfo {
     /**
-     * 首次内容绘制 (FCP) 时间。
-     */
-    private Double fcp;
-
-    /**
-     * 白屏时间（FP）。
+     * 首次绘制时间 (FP)。
      */
     private Integer fp;
 
     /**
      * 重定向耗时。
      */
-    private Integer redirectTime;
+    private Integer redirect_time;
 
     /**
-     * DNS查询耗时。
+     * DNS 查询耗时。
      */
-    private Integer domainLookupTime;
+    private Integer domain_lookup_time;
 
     /**
-     * TCP连接耗时。
+     * TCP 连接耗时。
      */
-    private Integer connectTime;
+    private Integer connect_time;
 
     /**
-     * HTTP请求耗时。
+     * HTTP 请求耗时。
      */
-    private Integer responseTime;
+    private Integer response_time;
 
     /**
-     * DOM解析耗时。
+     * DOM 解析完成时间。
      */
-    private Integer domCompleteTime;
+    private Integer dom_complete_time;
+
+    /**
+     * 首次内容绘制时间 (FCP)。
+     */
+    private Double fcp;
 
     /**
      * 第一字节时间 (TTFB)。
      */
     private Double ttfb;
+
+    /**
+     * 最大内容绘制时间 (LCP)。
+     */
+    private Double lcp;
+
+    /**
+     * 首次输入延迟 (FID)。
+     */
+    private Double fid;
 }
