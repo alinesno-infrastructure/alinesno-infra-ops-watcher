@@ -1,7 +1,7 @@
 @import 'element-plus/theme-chalk/dark/css-vars.css' ;
 
 $dark-bg-color: #1d1e1f;
-$dark-bg-panel: rgb(17, 18, 23);
+$dark-bg-panel: #262727;
 $dark-text-color: #E5EAF3;
 $dark-border-color:  rgba(204, 204, 220, 0.12);
 
@@ -30,7 +30,7 @@ html.dark {
 
 .top-headers{
     background-color: $dark-bg-color ;
-    border-bottom: 1px solid $dark-border-color ;
+    border-bottom: 1px solid #000 ;
 
     .header-logo-label{
         color: $dark-text-color !important;
@@ -44,7 +44,7 @@ html.dark {
 
 .siderbar{
     background-color: $dark-bg-color !important ;
-    border-right: 1px solid $dark-border-color !important ;
+    border-right: 1px solid #000 !important ;
     top: 0px ;
 }
 
@@ -165,6 +165,11 @@ html.dark {
     &:hover{
         background: $dark-bg-color !important;
     }
+}
+
+.el-tree-node{
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
 }
 
 .custom-tree-node {
