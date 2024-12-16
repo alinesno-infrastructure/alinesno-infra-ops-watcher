@@ -41,9 +41,10 @@ public class MetricsHandler extends MetricsServiceGrpc.MetricsServiceImplBase {
 
         IMetricsGaugeService metricsGaugeService = SpringUtil.getBean(IMetricsGaugeService.class);
         IMetricsSumService metricsSumService = SpringUtil.getBean(IMetricsSumService.class) ;
-        IMetricsHistogramService metricsHistogramService = SpringUtil.getBean(IMetricsHistogramService.class) ;
-        IMetricsExponentialHistogramService metricsExponentialHistogramService = SpringUtil.getBean(IMetricsExponentialHistogramService.class) ;
-        IMetricsSummaryService metricsSummaryService = SpringUtil.getBean(IMetricsSummaryService.class) ;
+
+//        IMetricsHistogramService metricsHistogramService = SpringUtil.getBean(IMetricsHistogramService.class) ;
+//        IMetricsExponentialHistogramService metricsExponentialHistogramService = SpringUtil.getBean(IMetricsExponentialHistogramService.class) ;
+//        IMetricsSummaryService metricsSummaryService = SpringUtil.getBean(IMetricsSummaryService.class) ;
 
         Map<String, List<Map<String, Object>>> list = handlePush(request.getResourceMetricsList());
 
