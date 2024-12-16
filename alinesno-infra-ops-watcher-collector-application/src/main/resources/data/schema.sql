@@ -141,3 +141,114 @@ CREATE TABLE telemetry_metrics_sum
 ) ENGINE = MergeTree()
 ORDER BY (`time_unix_nano`, `metric_name`)
 COMMENT '此表用于存储仪表盘类型的遥测指标数据';
+
+-- telemetry_metrics_histogram 表
+CREATE TABLE telemetry_metrics_histogram
+(
+    `resource_attributes` Map(String, String) COMMENT '资源属性',
+    `resource_schema_url` String COMMENT '资源模式URL',
+    `scope_name` String COMMENT '作用域名称',
+    `scope_version` String COMMENT '作用域版本',
+    `scope_attributes` Map(String, String) COMMENT '作用域属性',
+    `scope_dropped_attr_count` UInt32 COMMENT '作用域丢弃的属性数量',
+    `scope_schema_url` String COMMENT '作用域模式URL',
+    `metric_name` String COMMENT '指标名称',
+    `metric_description` String COMMENT '指标描述',
+    `metric_unit` String COMMENT '指标单位',
+    `attributes` Map(String, String) COMMENT '附加属性',
+    `start_time_unix_nano` Int64 COMMENT '开始时间（纳秒级Unix时间戳）',
+    `time_unix_nano` Int64 COMMENT '记录时间（纳秒级Unix时间戳）',
+    `count` UInt64 COMMENT '计数',
+    `sum` Float64 COMMENT '总和',
+    `bucket_counts` String COMMENT '桶计数',
+    `explicit_bounds` Array(Float64) COMMENT '显式边界',
+    `exemplars_filtered_attributes` Array(Map(String, String)) COMMENT '示例过滤属性',
+    `exemplars_time_unix_nano` Array(Int64) COMMENT '示例时间戳（纳秒级Unix时间戳）',
+    `exemplars_value` Array(Float64) COMMENT '示例值',
+    `exemplars_span_id` Array(String) COMMENT '示例跨度ID',
+    `exemplars_trace_id` Array(String) COMMENT '示例跟踪ID',
+    `flags` UInt8 COMMENT '标记',
+    `min` Float64 COMMENT '最小值',
+    `max` Float64 COMMENT '最大值'
+) ENGINE = MergeTree()
+ORDER BY (`time_unix_nano`, `metric_name`)
+COMMENT '此表用于存储直方图类型的遥测指标数据';
+
+CREATE TABLE telemetry_metrics_exponential_histogram
+(
+    `resource_attributes` Map(String, String) COMMENT '资源属性',
+    `resource_schema_url` String COMMENT '资源模式URL',
+    `scope_name` String COMMENT '作用域名称',
+    `scope_version` String COMMENT '作用域版本',
+    `scope_attributes` Map(String, String) COMMENT '作用域属性',
+    `scope_dropped_attr_count` UInt64 COMMENT '作用域丢弃的属性数量',
+    `scope_schema_url` String COMMENT '作用域模式URL',
+    `metric_name` String COMMENT '指标名称',
+    `metric_description` String COMMENT '指标描述',
+    `metric_unit` String COMMENT '指标单位',
+    `attributes` Map(String, String) COMMENT '附加属性',
+    `start_time_unix_nano` Int64 COMMENT '开始时间（纳秒级Unix时间戳）',
+    `time_unix_nano` Int64 COMMENT '记录时间（纳秒级Unix时间戳）',
+    `count` UInt64 COMMENT '计数',
+    `sum` Float64 COMMENT '总和',
+    `scale` Int32 COMMENT '比例尺',
+    `zero_count` UInt64 COMMENT '零桶计数',
+    `positive_offset` Int32 COMMENT '正偏移量',
+    `positive_bucket_counts` Array(UInt64) COMMENT '正桶计数',
+    `negative_offset` Int32 COMMENT '负偏移量',
+    `negative_bucket_counts` Array(UInt64) COMMENT '负桶计数',
+    `exemplars_filtered_attributes` Array(Map(String, String)) COMMENT '示例过滤属性',
+    `exemplars_time_unix_nano` Array(Int64) COMMENT '示例时间戳（纳秒级Unix时间戳）',
+    `exemplars_value` Array(Float64) COMMENT '示例值',
+    `exemplars_span_id` Array(String) COMMENT '示例跨度ID',
+    `exemplars_trace_id` Array(String) COMMENT '示例跟踪ID',
+    `flags` UInt8 COMMENT '标记',
+    `min` Float64 COMMENT '最小值',
+    `max` Float64 COMMENT '最大值'
+) ENGINE = MergeTree()
+ORDER BY (`time_unix_nano`, `metric_name`)
+COMMENT '此表用于存储指数直方图类型的遥测指标数据';
+
+-- 监控表结构
+CREATE TABLE IF NOT EXISTS nginx_access_log (
+    -- 客户端信息
+    remote_addr String COMMENT '客户端IP地址',
+    remote_user String COMMENT '远程用户',
+    time_local String COMMENT '请求时间（本地时间）',
+
+    -- 请求信息
+    request String COMMENT '完整的请求行',
+    status UInt16 COMMENT 'HTTP状态码',
+    body_size UInt32 COMMENT '发送的字节数（body部分）',
+    referer String COMMENT '来源页面URL',
+    agent String COMMENT '用户代理字符串',
+    x_forwarded String COMMENT 'X-Forwarded-For头信息',
+
+    -- 额外的日志信息
+    request_time String COMMENT '请求处理时间（秒）',
+    upstream_response_time String COMMENT '后端响应时间',
+    upstream_addr String COMMENT '后端服务器地址',
+    ssl_protocol String COMMENT 'SSL协议版本',
+    ssl_cipher String COMMENT 'SSL加密算法',
+    request_length UInt32 COMMENT '请求长度',
+    gzip_ratio String COMMENT 'Gzip压缩比率',
+    connection UInt32 COMMENT '连接序列号',
+    connection_requests UInt32 COMMENT '当前连接的请求数量',
+    msec Float64 COMMENT '日志记录的时间戳（毫秒）',
+    pipe String COMMENT '是否通过管道转发',
+    server_protocol String COMMENT '服务器使用的协议',
+    http_host String COMMENT 'Host头部信息',
+    http_cookie String COMMENT 'Cookie头部信息',
+    bytes_sent UInt32 COMMENT '发送给客户端的总字节数',
+    request_method String COMMENT '请求方法（GET, POST等）',
+    scheme String COMMENT '使用的方案（http或https）',
+    request_uri String COMMENT '请求的URI路径',
+    args String COMMENT '查询字符串参数',
+    http_accept_encoding String COMMENT 'Accept-Encoding头部信息',
+    http_accept_language String COMMENT 'Accept-Language头部信息',
+    http_via String COMMENT 'Via头部信息',
+    http_connection String COMMENT 'Connection头部信息',
+    http_cache_control String COMMENT 'Cache-Control头部信息'
+) ENGINE = MergeTree()
+ORDER BY (time_local)
+COMMENT '此表存储了来自Nginx访问日志的详细信息，用于分析网站流量、用户行为和其他重要指标。';
