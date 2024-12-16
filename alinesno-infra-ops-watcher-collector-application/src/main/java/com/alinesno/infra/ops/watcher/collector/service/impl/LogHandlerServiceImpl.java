@@ -24,8 +24,8 @@ public class LogHandlerServiceImpl implements LogHandlerService {
         logger.info("Received log request with UID: {}", logRequestDto.getUid());
 
         // Example of processing IO entries:
-        if (logRequestDto.getIoList() != null && !logRequestDto.getIoList().isEmpty()) {
-            logRequestDto.getIoList().forEach(ioEntry -> {
+        if (logRequestDto.getIo_list() != null && !logRequestDto.getIo_list().isEmpty()) {
+            logRequestDto.getIo_list().forEach(ioEntry -> {
                 logger.info("Processing IO entry: {}", ioEntry.getName());
                 // Add more detailed processing here as needed.
             });
@@ -35,10 +35,16 @@ public class LogHandlerServiceImpl implements LogHandlerService {
         // Persist to database, send to message queue, etc.
 
         // Log terminal info
-        logger.info("Terminal Info: {}", logRequestDto.getTerminalInfo());
+        logger.info("Terminal Info: {}", logRequestDto.getTerminal_info());
 
         // Log performance info
-        logger.info("Performance Info: {}", logRequestDto.getPerformanceInfo());
+        logger.info("Performance Info: {}", logRequestDto.getPerformance_info());
+
+        // ClickList
+        logRequestDto.getClick_list().forEach(clickEntry -> {
+            logger.info("Processing Click entry: {}", clickEntry);
+            // Add more detailed processing here as needed.
+        });
 
         // Log additional fields as necessary
         logger.info("Log ID: {}", logRequestDto.getId());
