@@ -47,12 +47,8 @@ public class MetricsGaugeServiceImpl implements IMetricsGaugeService {
 
             statement = connection.prepareStatement(metricsGaugeSql);
 
-//            JSONArray jsonArray = JSON.parseArray(logList);
-
             for(Map<String, Object> map: logList) {
                 JSONObject jsonObject = new JSONObject(map);
-
-                log.debug(JSONUtil.toJsonPrettyStr(jsonObject));
 
                 JSONObject resourceAttributes = jsonObject.getJSONObject("resourceAttributes");
                 Map<String, String> resAttr = new HashMap<>();
