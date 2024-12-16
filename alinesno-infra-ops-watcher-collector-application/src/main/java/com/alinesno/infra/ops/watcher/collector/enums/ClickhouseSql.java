@@ -158,28 +158,19 @@ public class ClickhouseSql {
 
     // 监控服务 sum
     public static final String metricsSumSql = "INSERT INTO telemetry_metrics_sum (" +
-            "resource_attributes," +
-            "resource_schema_url," +
-            "scope_name," +
-            "scope_version," +
-            "scope_attributes," +
-            "scope_dropped_attr_count," +
-            "scope_schema_url," +
-            "metric_name," +
-            "metric_description," +
-            "metric_unit," +
-            "attributes," +
-            "start_time_unix_nano," +
-            "time_unix_nano," +
-            "value," +
-            "flags" +
-//            "exemplars.filtered_attributes," +
-//            "exemplars.time_unix_nano," +
-//            "exemplars.value," +
-//            "exemplars.span_id," +
-//            "exemplars.trace_id," +
-//            "agg_temp," +
-//            "is_monotonic" +
-//            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "resource_attributes, " +
+            "resource_schema_url, " +
+            "scope_name, " +
+            "scope_version, " +
+            "scope_attributes, " +
+            "scope_dropped_attr_count, " +
+            "scope_schema_url, " +
+            "metric_name, " +
+            "metric_description, " +
+            "metric_unit, " +
+            "attributes, " +
+            "start_time_unix_nano, " +
+            "time_unix_nano, " +
+            "value, " +
+            "flags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 }
