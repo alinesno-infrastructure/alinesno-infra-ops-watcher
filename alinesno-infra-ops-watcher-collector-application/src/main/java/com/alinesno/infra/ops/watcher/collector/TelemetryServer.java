@@ -27,8 +27,12 @@ public class TelemetryServer {
      * @throws IOException 如果发生I/O错误。
      */
     public void start() throws IOException {
+
+        int maxMessageSize = 20 * 1024 * 1024; // 设置大小
+
         this.server = ServerBuilder
                 .forPort(4316)
+                .maxInboundMessageSize(maxMessageSize) // 设置接收的最大消息尺寸
                 .addService(new TracesHandler())
                 .addService(new LogsHandler())
                 .addService(new MetricsHandler())
