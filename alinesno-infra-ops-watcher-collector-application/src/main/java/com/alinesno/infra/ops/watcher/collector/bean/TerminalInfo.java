@@ -2,6 +2,9 @@ package com.alinesno.infra.ops.watcher.collector.bean;
 
 import lombok.Data;
 
+/**
+ * 终端信息。
+ */
 @Data
 public class TerminalInfo {
     /**
