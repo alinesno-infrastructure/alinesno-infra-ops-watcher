@@ -252,3 +252,59 @@ CREATE TABLE IF NOT EXISTS nginx_access_log (
 ) ENGINE = MergeTree()
 ORDER BY (time_local)
 COMMENT '此表存储了来自Nginx访问日志的详细信息，用于分析网站流量、用户行为和其他重要指标。';
+
+
+--- >>>>>>> 前端监控 >>>>>>>>> -------
+-- 表注释：此表用于记录用户的终端信息和页面性能指标，支持详细的行为分析。
+CREATE TABLE IF NOT EXISTS font_user_performance_logs (
+    -- 终端信息
+    resolving_power String COMMENT '终端分辨率',  -- 示例："2560*1440"
+    referrer String COMMENT '文档来源页面的URL',  -- 示例："http://localhost/userAccess"
+    ua String COMMENT '用户代理字符串',  -- 示例："Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+    browser_json String COMMENT '浏览器信息，JSON格式存储',  -- 包含浏览器名称、版本等信息
+    engine_json String COMMENT '浏览器引擎信息，JSON格式存储',  -- 包含引擎名称、版本等信息
+    os_json String COMMENT '操作系统信息，JSON格式存储',  -- 包含操作系统名称、版本等信息
+    device_json String COMMENT '设备信息，JSON格式存储',  -- 包含设备特定信息
+    cpu_json String COMMENT 'CPU信息，JSON格式存储',  -- 包含CPU特定信息
+    ip String COMMENT 'IP地址',
+    city String COMMENT '城市信息',
+
+    -- 性能信息
+    fp Int32 COMMENT '首次绘制时间 (FP)，单位：毫秒',  -- 示例：17
+    redirect_time Int32 COMMENT '重定向耗时，单位：毫秒',  -- 示例：0
+    domain_lookup_time Int32 COMMENT 'DNS查询耗时，单位：毫秒',  -- 示例：0
+    connect_time Int32 COMMENT 'TCP连接耗时，单位：毫秒',  -- 示例：0
+    response_time Int32 COMMENT 'HTTP请求耗时，单位：毫秒',  -- 示例：1
+    dom_complete_time Int32 COMMENT 'DOM解析完成时间，单位：毫秒',  -- 示例：1036
+    fcp Float64 COMMENT '首次内容绘制时间 (FCP)，单位：毫秒',  -- 示例：209.19999999995343
+    ttfb Float64 COMMENT '第一字节时间 (TTFB)，单位：毫秒',  -- 示例：16.300000000046566
+    lcp Float64 COMMENT '最大内容绘制时间 (LCP)，单位：毫秒',  -- 示例：209.19999999995343
+    fid Float64 COMMENT '首次输入延迟 (FID)，单位：毫秒',  -- 示例：20.100000000093132
+
+    -- 用户唯一标识符
+    uid String COMMENT '用户唯一标识符，由IP与用户代理生成',  -- 示例："cdc818bdd16ca7ca135347e5eced8d37"
+
+    -- 日志配置中的ID标识
+    id String COMMENT '日志配置中的ID标识'  -- 示例："logJs"
+
+) ENGINE = MergeTree()
+ORDER BY (city, ip, uid);
+
+-- 表注释：此表用于记录用户的点击事件，支持详细的行为分析。
+CREATE TABLE IF NOT EXISTS font_click_events (
+    -- 点击事件信息
+    log_type String COMMENT '日志类型，如 "click"',  -- 示例："click"
+    ele_type String COMMENT '元素类型，如 "li"',  -- 示例："li"
+    ele_content String COMMENT '元素内容',  -- 示例：""（空字符串）
+    time_step Int64 COMMENT '时间戳，单位：毫秒',  -- 示例：1734353167708
+    href String COMMENT '链接地址',  -- 示例："http://localhost/pipelines"
+    ele_location String COMMENT '元素位置',  -- 示例：""（空字符串）
+
+    -- 用户唯一标识符
+    uid String COMMENT '用户唯一标识符，由IP与用户代理生成',  -- 示例："cdc818bdd16ca7ca135347e5eced8d37"
+
+    -- 日志配置中的ID标识
+    id String COMMENT '日志配置中的ID标识'  -- 示例："logJs"
+
+) ENGINE = MergeTree()
+ORDER BY (uid, time_step);
