@@ -213,10 +213,10 @@
   <script type="module" src="/src/main.js"></script>
 
   <!-- 前端监控 -->
-  <script src="http://data.linesno.com/monitor/log.js/2.0.1/log.min.js"></script>
-  <script>
-    log.init({ sendAddress: 'http://localhost:5316/api/logs/collect' });
+  <script src="http://data.linesno.com/monitor/log.js/2.0.1/log.min.js"
+          onload="log.init({ sendAddress: 'http://alinesno-infra-ops-watcher-collector-application.rest.beta.base.infra.linesno.com/api/logs/collect', id: 'alinesno-infra-ops-watcher-ui-console' });">
   </script>
+
 </body>
 
 </html>
