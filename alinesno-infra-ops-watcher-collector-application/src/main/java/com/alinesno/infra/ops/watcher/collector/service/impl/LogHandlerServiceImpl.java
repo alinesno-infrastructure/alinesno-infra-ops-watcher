@@ -1,15 +1,22 @@
 package com.alinesno.infra.ops.watcher.collector.service.impl;
 
 import com.alinesno.infra.ops.watcher.collector.bean.LogRequestDto;
+import com.alinesno.infra.ops.watcher.collector.service.IClickEventService;
+import com.alinesno.infra.ops.watcher.collector.service.IUserPerformanceLogService;
 import com.alinesno.infra.ops.watcher.collector.service.LogHandlerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class LogHandlerServiceImpl implements LogHandlerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogHandlerServiceImpl.class);
+    @Autowired
+    private IUserPerformanceLogService userPerformanceLogService;
+
+    @Autowired
+    private IClickEventService clickEventService;
 
     /**
      * 处理从前端收集的日志信息。
@@ -21,12 +28,12 @@ public class LogHandlerServiceImpl implements LogHandlerService {
         // Here you can add your business logic for handling the logs.
         // For demonstration purposes, we're simply logging the incoming data.
 
-        logger.info("Received log request with UID: {}", logRequestDto.getUid());
+        log.info("Received log request with UID: {}", logRequestDto.getUid());
 
         // Example of processing IO entries:
         if (logRequestDto.getIo_list() != null && !logRequestDto.getIo_list().isEmpty()) {
             logRequestDto.getIo_list().forEach(ioEntry -> {
-                logger.info("Processing IO entry: {}", ioEntry.getName());
+                log.info("Processing IO entry: {}", ioEntry.getName());
                 // Add more detailed processing here as needed.
             });
         }
@@ -35,20 +42,29 @@ public class LogHandlerServiceImpl implements LogHandlerService {
         // Persist to database, send to message queue, etc.
 
         // Log terminal info
-        logger.info("Terminal Info: {}", logRequestDto.getTerminal_info());
+        log.info("Terminal Info: {}", logRequestDto.getTerminal_info());
 
         // Log performance info
-        logger.info("Performance Info: {}", logRequestDto.getPerformance_info());
+        log.info("Performance Info: {}", logRequestDto.getPerformance_info());
 
         // ClickList
         logRequestDto.getClick_list().forEach(clickEntry -> {
-            logger.info("Processing Click entry: {}", clickEntry);
+            log.info("Processing Click entry: {}", clickEntry);
             // Add more detailed processing here as needed.
         });
 
         // Log additional fields as necessary
-        logger.info("Log ID: {}", logRequestDto.getId());
+        log.info("Log ID: {}", logRequestDto.getId());
 
         // In a real-world scenario, this is where you would implement the actual log processing logic.
+
+        clickEventService.saveClickEvents(logRequestDto.getClick_list() ,
+                logRequestDto.getUid(),
+                logRequestDto.getId());
+
+        userPerformanceLogService.saveUserPerformanceLogs(logRequestDto.getTerminal_info(),
+                logRequestDto.getPerformance_info(),
+                logRequestDto.getUid(),
+                logRequestDto.getId());
     }
 }
