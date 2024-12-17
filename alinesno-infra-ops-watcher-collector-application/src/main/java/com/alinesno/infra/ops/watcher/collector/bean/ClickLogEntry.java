@@ -2,7 +2,9 @@ package com.alinesno.infra.ops.watcher.collector.bean;
 
 import lombok.Data;
 
-// 假设 ClickLogEntry 类已经被定义，它应该包含所有描述点击事件所需的属性。
+/**
+* 它应该包含所有描述点击事件所需的属性。
+ */
 @Data
 public class ClickLogEntry {
     private String logType;  // 日志类型，如 "click"
