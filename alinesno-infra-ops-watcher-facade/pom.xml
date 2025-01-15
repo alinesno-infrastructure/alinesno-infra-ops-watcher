@@ -22,6 +22,20 @@
 			<version>${revision}</version>
 		</dependency>
 
+		<!-- 数据库安全加密 -->
+		<dependency>
+			<groupId>com.alinesno.infra.common</groupId>
+			<artifactId>alinesno-infra-common-security-mapper</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+		<!-- fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>2.0.31</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
