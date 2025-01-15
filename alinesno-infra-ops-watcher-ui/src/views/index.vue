@@ -38,7 +38,7 @@ import OperationWorkspaceService from './operation-workspace/service.vue'
 import HeadlthPanel from '@/components/Health/index.vue'
 
 const currentEnvClusterObj = ref({
-  appName : '监控预警集成服务'  ,
+  appName : '运维监控平台'  ,
   clusterName: '可靠性消息中间件集成'  , 
   desc: '快速接入各类告警信息，通过算法自动去重降噪，并配合分派策略，提供出报警数据接口'
 }) 
