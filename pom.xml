@@ -29,6 +29,7 @@
         <module>alinesno-infra-ops-watcher-channel</module> <!-- 监控渠道集成 -->
         <module>alinesno-infra-ops-watcher-alert</module> <!-- 通知渠道 -->
 
+        <module>alinesno-infra-ops-watcher-collector-agent</module> <!-- 数据采集agent-->
         <module>alinesno-infra-ops-watcher-collector-application</module> <!-- 数据采集 -->
 
         <module>alinesno-infra-ops-watcher-logger</module> <!-- 日志处理 -->
